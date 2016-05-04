@@ -3,7 +3,7 @@
 
 angular.module('conferenceApp.constants', [])
 
-.constant('appConfig', {userRoles:['guest','author','reviewer','chair']})
+.constant('appConfig', {userRoles:['guest','user','admin']})
 
 ;
 })(angular);

@@ -2,5 +2,5 @@
 
 exports = module.exports = {
   // List of user roles
-  userRoles: ['guest', 'author', 'reviewer', 'chair']
+  userRoles: ['guest', 'user', 'admin']
 };

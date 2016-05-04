@@ -6,7 +6,8 @@ module.exports = {
 
   // Sequelize connection opions
   sequelize: {
-    uri: 'postgres://',
+    uri: process.env.SEQUELIZE_URI ||
+         'postgres://user:pass@localhost:5432/user',
     options: {
       logging: false,
       define: {

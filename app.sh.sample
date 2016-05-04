@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export SEQUELIZE_URI="postgres://joh:werlte@localhost:5432/joh"
+
+grunt "$@"

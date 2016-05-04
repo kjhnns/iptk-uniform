@@ -19,11 +19,17 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 
 2. Run `bower install` to install front-end dependencies.
 
-3. Run `grunt serve` to start the development server. It should automatically open the client in your browser when ready.
+3. Copy `app.sh.sample` and name it `app.sh`.
+
+4. Modify the `SEQUELIZE_URI` to match your local Postgres-Database Configuration.
+
+5. Allow the `app.sh` to be executed by executing `chmod +x app.sh`
+
+3. Run `./app.sh serve` to start the development server. It should automatically open the client in your browser when ready.
 
 ## Build & development
 
-Run `grunt build` for building and `grunt serve` for preview.
+Run `./app.sh build` for building and `./app.sh serve` for preview.
 
 ## Testing
 
