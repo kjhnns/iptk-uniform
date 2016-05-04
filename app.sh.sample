@@ -1,5 +1,5 @@
 #!/bin/sh
 
-export SEQUELIZE_URI="postgres://joh:werlte@localhost:5432/joh"
+export SEQUELIZE_URI="postgres://user:pass@localhost:5432/dbname"
 
 grunt "$@"
