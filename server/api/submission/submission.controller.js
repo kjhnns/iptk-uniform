@@ -92,3 +92,15 @@ export function update(req, res) {
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
+
+/**
+ * Deletes a user
+ * restriction: 'admin'
+ */
+export function destroy(req, res) {
+  return Submission.destroy({ _id: req.params.id })
+    .then(function() {
+      res.status(204).end();
+    })
+    .catch(handleError(res));
+}
