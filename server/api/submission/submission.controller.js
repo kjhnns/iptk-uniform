@@ -64,6 +64,13 @@ export function index(req, res) {
     .catch(handleError(res));
 }
 
+// Creates a new Submission in the DB
+export function create(req, res) {
+  return Submission.create(req.body)
+    .then(respondWithResult(res, 201))
+    .catch(handleError(res));
+}
+
 // Gets a single Submission from the DB
 export function show(req, res) {
   return Submission.find({
@@ -79,6 +86,22 @@ export function show(req, res) {
 
 // Updates an existing Submission in the DB
 export function update(req, res) {
+  if (req.body._id) {
+    delete req.body._id;
+  }
+  return Submission.find({
+    where: {
+      _id: req.params.id
+    }
+  })
+    .then(handleEntityNotFound(res))
+    .then(saveUpdates(req.body))
+    .then(respondWithResult(res))
+    .catch(handleError(res));
+}
+
+// Updates an existing Submission file in the DB
+export function updateFile(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
