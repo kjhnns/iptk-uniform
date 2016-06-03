@@ -4,13 +4,12 @@
  * POST    /api/things              ->  create
  * GET     /api/things/:id          ->  show
  * PUT     /api/things/:id          ->  update
- * DELETE  /api/things/:id          ->  destroy
  */
 
 'use strict';
 
 import _ from 'lodash';
-import {Thing} from '../../sqldb';
+import {Submission} from '../../sqldb'; //lookup sqldb
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -60,14 +59,14 @@ function handleError(res, statusCode) {
 
 // Gets a list of Things
 export function index(req, res) {
-  return Thing.findAll()
+  return Submission.findAll()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Gets a single Thing from the DB
+// Gets a single Submission from the DB
 export function show(req, res) {
-  return Thing.find({
+  return Submission.find({
     where: {
       _id: req.params.id
     }
@@ -77,19 +76,13 @@ export function show(req, res) {
     .catch(handleError(res));
 }
 
-// Creates a new Thing in the DB
-export function create(req, res) {
-  return Thing.create(req.body)
-    .then(respondWithResult(res, 201))
-    .catch(handleError(res));
-}
 
-// Updates an existing Thing in the DB
+// Updates an existing Submission in the DB
 export function update(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  return Thing.find({
+  return Submission.find({
     where: {
       _id: req.params.id
     }
@@ -97,17 +90,5 @@ export function update(req, res) {
     .then(handleEntityNotFound(res))
     .then(saveUpdates(req.body))
     .then(respondWithResult(res))
-    .catch(handleError(res));
-}
-
-// Deletes a Thing from the DB
-export function destroy(req, res) {
-  return Thing.find({
-    where: {
-      _id: req.params.id
-    }
-  })
-    .then(handleEntityNotFound(res))
-    .then(removeEntity(res))
     .catch(handleError(res));
 }

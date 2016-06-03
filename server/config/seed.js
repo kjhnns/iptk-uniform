@@ -7,6 +7,7 @@
 import sqldb from '../sqldb';
 var Thing = sqldb.Thing;
 var User = sqldb.User;
+var Submission = sqldb.Submission;
 
 Thing.sync()
   .then(() => {
@@ -62,3 +63,24 @@ User.sync()
       console.log('finished populating users');
     });
   });
+
+  Submission.sync()
+    .then(() => Submission.destroy({ where: {} }))
+    .then(() => {
+      Submission.bulkCreate([{
+        title: 'Paper Uno',
+        file: 'www.google.de',
+        status: 1,
+        keywords: 'best paper ever',
+        abstract: 'this is a test'
+      }, {
+        title: 'Paper TWO',
+        file: 'www.google.de',
+        status: 4,
+        keywords: 'secondbest paper ever',
+        abstract: 'this is a test number two'
+      }])
+      .then(() => {
+        console.log('finished populating users');
+      });
+    });
