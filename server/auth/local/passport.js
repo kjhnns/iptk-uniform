@@ -6,8 +6,7 @@ function localAuthenticate(User, email, password, done) {
     where: {
       email: email.toLowerCase()
     }
-  })
-    .then(user => {
+  }).then(user => {
       if (!user) {
         return done(null, false, {
           message: 'This email is not registered.'
@@ -23,8 +22,7 @@ function localAuthenticate(User, email, password, done) {
           return done(null, user);
         }
       });
-    })
-    .catch(err => done(err));
+    }).catch(err => done(err));
 }
 
 export function setup(User, config) {

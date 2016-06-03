@@ -9,3 +9,5 @@ dist
 npm-debug.log
 coverage
 app.sh
+
+.DS_Store

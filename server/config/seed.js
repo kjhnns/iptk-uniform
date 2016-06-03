@@ -48,12 +48,13 @@ User.sync()
   .then(() => {
     User.bulkCreate([{
       provider: 'local',
+      role: 1, // author
       name: 'Test User',
       email: 'test@example.com',
       password: 'test'
     }, {
       provider: 'local',
-      role: 'admin',
+      role: 7,
       name: 'Admin',
       email: 'admin@example.com',
       password: 'admin'
