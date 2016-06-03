@@ -1,6 +1,6 @@
 # conference
 
-This project was generated with the [Angular Full-Stack Generator](https://github.com/DaftMonk/generator-angular-fullstack) version 3.6.1.
+System to review and author submissions for a conference XYZ. 
 
 ## Getting Started
 
@@ -34,3 +34,36 @@ Run `./app.sh build` for building and `./app.sh serve` for preview.
 ## Testing
 
 Running `npm test` will run the unit tests with karma.
+
+
+# Role and Access Management
+
+While you are operating in the api folder you can use the authentication service by using this line:
+`import * as auth from '../../auth/auth.service';`
+
+Afterwards you are able to check whether a user has certain role:
+
+`auth.checkRoles(rolesHeNeeds, rolesHeHas, granted, forbidden)`
+
+rolesHeNeeds: String || Array - Role Names that you want to check
+rolesHeHas: typically you can use req.user.role
+
+granted and forbidden are two functions that you need to provide as callback functions.
+e.g.
+
+### Check multiple Roles
+`auth.checkRoles(['author', 'chair'], req.user.role, function() {
+  console.log('Granted :)');
+  res.status(200);
+}, function() {
+  res.status(403).send('Forbidden');
+});`
+
+### check specific role
+`auth.checkRoles('author', req.user.role, function() {
+  console.log('Granted :)');
+  res.status(200);
+}, function() {
+  res.status(403).send('Forbidden');
+});`
+

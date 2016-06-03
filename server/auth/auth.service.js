@@ -55,44 +55,56 @@ export function hasRole(roleRequired) {
     return compose()
         .use(isAuthenticated())
         .use(function meetsRequirements(req, res, next) {
-            console.log('Role Required: ' + roleRequired);
-            if (_.isArray(roleRequired)) {
-                var result = false;
-
-                console.log("User has role: " + req.user.role);
-                _.forEach(roleRequired, function(_roleRequired, key) {
-                    var rolePosition = config.userRoles[_roleRequired];
-                    console.log("Role required: " + rolePosition + " - " + _roleRequired);
-                    if (typeof(rolePosition) != 'undefined') {
-                        if ((req.user.role & rolePosition) == rolePosition) {
-                            result = true;
-                        }
-                    }
-                });
-
-                if (result) {
-                    return next();
-                } else {
-                    res.status(403).send('Forbidden');
-                }
-
-            } else {
-                var rolePosition = config.userRoles[roleRequired];
-                console.log("User has role: " + req.user.role);
-                console.log("Role required: " + rolePosition + " - " + roleRequired);
-                if (typeof(rolePosition) != 'undefined') {
-                    if ((req.user.role & rolePosition) == rolePosition) {
-                        return next();
-                    } else {
-                        res.status(403).send('Forbidden');
-                    }
-                } else {
-                    return next();
-                }
-            }
+            validateRoles(roleRequired, req.user.role, function() {
+                return next();
+            }, function() {
+                res.status(403).send('Forbidden');
+            });
         });
 
 }
+
+
+export function checkRoles(rolesHeNeeds, rolesHeHas, granted, forbidden) {
+    var validateRole = function(roles, roleHeNeeds, roleHeHas) {
+        var roleValue = roles[roleHeNeeds];
+        console.log("User has role: " + roleHeHas);
+        console.log("Role required: " + roleValue + " - " + roleHeNeeds);
+        if (typeof(roleValue) != 'undefined') {
+            if ((roleHeHas & roleValue) == roleValue) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    };
+
+
+    if (_.isArray(rolesHeNeeds)) {
+        var result = false;
+
+        _.forEach(rolesHeNeeds, function(roleRequired, key) {
+            if (validateRole(config.userRoles, roleRequired, rolesHeHas)) {
+                result = true;
+            }
+        });
+
+        if (result) {
+            return granted();
+        } else {
+            return forbidden();
+        }
+    } else {
+        if (validateRole(config.userRoles, rolesHeNeeds, rolesHeHas)) {
+            return granted();
+        } else {
+            return forbidden();
+        }
+    }
+}
+
 
 /**
  * Returns a jwt token signed by the app secret
