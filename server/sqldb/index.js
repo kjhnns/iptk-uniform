@@ -17,5 +17,6 @@ var db = {
 db.Thing = db.sequelize.import('../api/thing/thing.model');
 db.User = db.sequelize.import('../api/user/user.model');
 db.Submission = db.sequelize.import('../api/submission/submission.model');
+db.Review = db.sequelize.import('../api/review/review.model');
 
 module.exports = db;

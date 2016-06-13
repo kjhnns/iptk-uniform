@@ -12,6 +12,7 @@ export default function(app) {
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
   app.use('/api/submissions', require('./api/submission'));
+  app.use('/api/reviews', require('./api/review'));
 
   app.use('/auth', require('./auth').default);
 
