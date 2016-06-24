@@ -47,7 +47,7 @@ export function index(req, res) {
 export function create(req, res, next) {
   var newUser = User.build(req.body);
   newUser.setDataValue('provider', 'local');
-  newUser.setDataValue('role', 'user');
+  newUser.setDataValue('role', 0);
   return newUser.save()
     .then(function(user) {
       var token = jwt.sign({ _id: user._id }, config.secrets.session, {
