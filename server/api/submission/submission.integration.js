@@ -1,11 +1,11 @@
 'use strict';
 
 import app from '../..';
-import { Submission, User,SubToReviewer   } from '../../sqldb';
+import { Submission, User, SubToReviewer } from '../../sqldb';
 import request from 'supertest';
 
 describe('Submission API:', function() {
-    var chairToken, guestToken, guestUser, chairUser, reviewerUser;
+    var chairToken, guestToken, reviewerToken, guestUser, chairUser, reviewerUser;
 
     before(function() {
         return Submission.destroy({ where: {} });
@@ -30,6 +30,7 @@ describe('Submission API:', function() {
                 password: 'password',
                 role: 1
             });
+
 
         User.sync({ force: true }).then(function() {
             User.destroy({ where: {} }).then(function() {
@@ -59,7 +60,18 @@ describe('Submission API:', function() {
                                         .expect('Content-Type', /json/)
                                         .end((err, res) => {
                                             chairToken = res.body.token;
-                                            done();
+                                            request(app)
+                                                .post('/auth/local')
+                                                .send({
+                                                    email: 'reviewuser@example.com',
+                                                    password: 'password'
+                                                })
+                                                .expect(200)
+                                                .expect('Content-Type', /json/)
+                                                .end((err, res) => {
+                                                    reviewerToken = res.body.token;
+                                                    done();
+                                                });
                                         });
                                 });
                         });
@@ -87,11 +99,11 @@ describe('Submission API:', function() {
                 });
             return Promise.all([Submission.destroy({ where: {} }), sub.save().then(function(obj) {
                     guestSub = obj.dataValues;
-                    return new Promise(function(resolve, reject) { resolve(); });
+                    return obj;
                 }),
                 sub2.save().then(function(obj) {
                     chairSub = obj.dataValues;
-                    return new Promise(function(resolve, reject) { resolve(); });
+                    return obj;
                 })
             ]);
         });
@@ -99,7 +111,7 @@ describe('Submission API:', function() {
 
         it('should assign the reviewer to a submission', function(done) {
             request(app)
-                .put('/api/submissions/assign/'+chairSub._id+'/' + reviewerUser._id)
+                .put('/api/submissions/assign/' + chairSub._id + '/' + reviewerUser._id)
                 .set('authorization', 'Bearer ' + chairToken)
                 .expect(201)
                 .end(function(err, res) {
@@ -118,7 +130,7 @@ describe('Submission API:', function() {
 
         it('should assign the user with multiple rights to a submission', function(done) {
             request(app)
-                .put('/api/submissions/assign/'+guestSub._id+'/' + chairUser._id)
+                .put('/api/submissions/assign/' + guestSub._id + '/' + chairUser._id)
                 .set('authorization', 'Bearer ' + chairToken)
                 .expect(201)
                 .end(function(err, res) {
@@ -137,7 +149,7 @@ describe('Submission API:', function() {
 
         it('shouldnt allow guest user to review', function(done) {
             request(app)
-                .put('/api/submissions/assign/'+guestSub._id+'/' + guestUser._id)
+                .put('/api/submissions/assign/' + guestSub._id + '/' + guestUser._id)
                 .set('authorization', 'Bearer ' + chairToken)
                 .expect(403)
                 .end(done);
@@ -308,7 +320,7 @@ describe('Submission API:', function() {
 
     describe('GET /api/submissions/:id', function() {
         var guestSub, chairSub;
-        before(function() {
+        before(function(done) {
             var sub = Submission.build({
                     title: 'Hallo Submission 1',
                     keywords: 'bla',
@@ -321,15 +333,27 @@ describe('Submission API:', function() {
                     abstract: 'asd',
                     createdBy: chairUser._id
                 });
+
+            var createRelationShip = function(sid, rid, done) {
+                return SubToReviewer.create({
+                    subId: sid,
+                    userId: rid
+                }).then((o) => {
+                    done();
+                });
+            };
+
             return Promise.all([Submission.destroy({ where: {} }), sub.save().then(function(obj) {
                     guestSub = obj.dataValues;
-                    return new Promise(function(resolve, reject) { resolve(); });
+                    return obj;
                 }),
                 sub2.save().then(function(obj) {
                     chairSub = obj.dataValues;
-                    return new Promise(function(resolve, reject) { resolve(); });
+                    return obj;
                 })
-            ]);
+            ]).then(() => {
+                createRelationShip(guestSub._id, reviewerUser._id, done);
+            });
         });
 
 
@@ -341,6 +365,19 @@ describe('Submission API:', function() {
                 .expect(200)
                 .expect('Content-Type', /json/)
                 .end(function(err, res) {
+                    expect(res.body.createdBy, guestUser._id);
+                    done();
+                });
+        });
+
+
+        it('should show the reviewer the guests submission', function(done) {
+            request(app)
+                .get('/api/submissions/' + guestSub._id)
+                .set('authorization', 'Bearer ' + reviewerToken)
+                .expect(200)
+                .end(function(err, res) {
+                    expect(res.status, 200);
                     expect(res.body.createdBy, guestUser._id);
                     done();
                 });
@@ -370,6 +407,7 @@ describe('Submission API:', function() {
                 .expect(200)
                 .expect('Content-Type', /json/)
                 .end(function(err, res) {
+                    console.log(res.body);
                     expect(res.body.createdBy, guestUser._id);
                     done();
                 });
@@ -446,15 +484,14 @@ describe('Submission API:', function() {
 
         it('should return two submissions and return 200', function(done) {
             request(app)
-                .post('/api/submissions')
+                .get('/api/submissions')
                 .set('authorization', 'Bearer ' + chairToken)
-                .send({
-                    keywords: 'bla',
-                    abstract: 'asd'
-                })
-                .expect(400)
+                .expect(200)
                 .expect('Content-Type', /json/)
-                .end(done);
+                .end((err, res) => {
+                    expect(res.body.length, 2);
+                    done();
+                });
         });
     });
 

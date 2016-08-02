@@ -14,7 +14,7 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 router.put('/:id', auth.hasRole('author'), controller.update);
 router.put('/file/:id', auth.hasRole('author'), controller.updateFile);
 router.delete('/:id', auth.hasRole('author'), controller.destroy);
-router.put('/assign/:submissionId/:reviewerId',auth.hasRole('chair'), controller.assign);
+router.put('/assign/:submissionId/:reviewerId', auth.hasRole('chair'), controller.assign);
 
 
 module.exports = router;

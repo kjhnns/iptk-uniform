@@ -73,6 +73,7 @@ export function index(req, res) {
     });
 }
 
+
 // Creates a new Submission in the DB
 export function create(req, res) {
     var newSub = Submission.build(req.body);
@@ -95,15 +96,27 @@ export function show(req, res) {
             .then(respondWithResult(res))
             .catch(handleError(res));
     }, function() {
-        return Submission.find({
-                where: {
-                    _id: req.params.id,
-                    createdBy: req.user._id
-                }
-            })
-            .then(handleEntityNotFound(res))
-            .then(respondWithResult(res))
-            .catch(handleError(res));
+        auth.checkReviewerRights(req.user._id, req.params.id, () => {
+            return Submission.find({
+                    where: {
+                        _id: req.params.id
+                    }
+                })
+                .then(handleEntityNotFound(res))
+                .then(respondWithResult(res))
+                .catch(handleError(res));
+        }, () => {
+            return Submission.find({
+                    where: {
+                        _id: req.params.id,
+                        createdBy: req.user._id
+                    }
+                })
+                .then(handleEntityNotFound(res))
+                .then(respondWithResult(res))
+                .catch(handleError(res));
+        });
+
     });
 }
 
@@ -154,7 +167,7 @@ export function destroy(req, res) {
         .then(function(result) {
             res.status(204).end();
         })
-        .catch(handleError(res,403));
+        .catch(handleError(res, 403));
 }
 
 

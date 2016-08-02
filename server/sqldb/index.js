@@ -9,8 +9,8 @@ import config from '../config/environment';
 import Sequelize from 'sequelize';
 
 var db = {
-  Sequelize,
-  sequelize: new Sequelize(config.sequelize.uri, config.sequelize.options)
+    Sequelize,
+    sequelize: new Sequelize(config.sequelize.uri, config.sequelize.options)
 };
 
 // Insert models below
@@ -22,14 +22,14 @@ db.SubToReviewer = db.sequelize.import('../api/submission/subtoreviewer.model');
 
 
 db.User.belongsToMany(db.Submission, {
-	through: db.SubToReviewer,
-  foreignKey: 'userId'
+    through: db.SubToReviewer,
+    foreignKey: 'userId'
 });
 
 
 db.Submission.belongsToMany(db.User, {
-  through: db.SubToReviewer,
-  foreignKey: 'subId'
+    through: db.SubToReviewer,
+    foreignKey: 'subId'
 });
 
 

@@ -5,7 +5,7 @@ import config from '../config/environment';
 import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import compose from 'composable-middleware';
-import { User } from '../sqldb';
+import { User, Submission, SubToReviewer } from '../sqldb';
 var _ = require('lodash');
 
 var validateJwt = expressJwt({
@@ -64,6 +64,20 @@ export function hasRole(roleRequired) {
 
 }
 
+
+export function checkReviewerRights(hisId, subId, granted, denied) {
+    SubToReviewer.find({ where: { subId: subId, userId: hisId } })
+        .then((relObj) => {
+            if (relObj !== null && +relObj.subId === +subId && +relObj.userId === +hisId) {
+                console.log("Validate Relation: user " + hisId + " -> sub " + subId + " -> granted");
+                return granted();
+            } else {
+                console.log("Validate Relation: user " + hisId + " -> sub " + subId + " -> forbidden");
+                return denied();
+            }
+        });
+};
+
 var validateRole = function(roles, roleHeNeeds, roleHeHas) {
     var roleValue = roles[roleHeNeeds];
     if (roles !== undefined && roleHeNeeds !== undefined) {
@@ -80,7 +94,7 @@ var validateRole = function(roles, roleHeNeeds, roleHeHas) {
     }
 }
 
-export function checkRoles(rolesHeNeeds, rolesHeHas, granted, forbidden) {
+export function checkRoles(rolesHeNeeds, rolesHeHas, granted, denied) {
     if (_.isArray(rolesHeNeeds)) {
         var result = false;
         _.forEach(rolesHeNeeds, function(roleRequired, key) {
@@ -91,13 +105,13 @@ export function checkRoles(rolesHeNeeds, rolesHeHas, granted, forbidden) {
         if (result) {
             return granted();
         } else {
-            return forbidden();
+            return denied();
         }
     } else {
         if (validateRole(config.userRoles, rolesHeNeeds, rolesHeHas)) {
             return granted();
         } else {
-            return forbidden();
+            return denied();
         }
     }
 }
