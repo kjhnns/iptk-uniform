@@ -22,15 +22,13 @@ db.SubToReviewer = db.sequelize.import('../api/submission/subtoreviewer.model');
 
 
 db.User.belongsToMany(db.Submission, {
-	through: "SubToReviewer",
-  unique: true,
+	through: db.SubToReviewer,
   foreignKey: 'userId'
 });
 
 
 db.Submission.belongsToMany(db.User, {
-  through: "SubToReviewer",
-  unique: true,
+  through: db.SubToReviewer,
   foreignKey: 'subId'
 });
 

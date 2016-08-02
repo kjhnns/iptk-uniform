@@ -44,8 +44,8 @@ function removeEntity(res) {
 function handleEntityNotFound(res) {
     return function(entity) {
         if (!entity) {
-            res.status(404).end();
-            // return null;
+            throw 404;
+
         } else {
             return entity;
         }
@@ -53,7 +53,7 @@ function handleEntityNotFound(res) {
 }
 
 function handleError(res, statusCode) {
-    statusCode = statusCode || 400;
+    statusCode = statusCode || 500;
     return function(err) {
         console.log(err);
         res.status(statusCode).send(err);
@@ -154,7 +154,7 @@ export function destroy(req, res) {
         .then(function(result) {
             res.status(204).end();
         })
-        .catch(handleError(res));
+        .catch(handleError(res,403));
 }
 
 
@@ -163,7 +163,6 @@ export function destroy(req, res) {
  */
 
 export function assign(req, res) {
-
     var userIsReviewer = function(res) {
         return function(uObj) {
             return auth.checkRoles("reviewer", uObj.dataValues.role, () => {
@@ -171,7 +170,7 @@ export function assign(req, res) {
                 return uObj;
             }, () => {
                 console.log("no rights unfortunately");
-                res.send(403).end();
+                throw 403;
             })
         };
     }

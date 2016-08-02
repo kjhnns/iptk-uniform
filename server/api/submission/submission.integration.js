@@ -1,7 +1,7 @@
 'use strict';
 
 import app from '../..';
-import { Submission, User } from '../../sqldb';
+import { Submission, User,SubToReviewer   } from '../../sqldb';
 import request from 'supertest';
 
 describe('Submission API:', function() {
@@ -94,6 +94,53 @@ describe('Submission API:', function() {
                     return new Promise(function(resolve, reject) { resolve(); });
                 })
             ]);
+        });
+
+
+        it('should assign the reviewer to a submission', function(done) {
+            request(app)
+                .put('/api/submissions/assign/'+chairSub._id+'/' + reviewerUser._id)
+                .set('authorization', 'Bearer ' + chairToken)
+                .expect(201)
+                .end(function(err, res) {
+                    SubToReviewer.find({
+                        where: {
+                            userId: reviewerUser._id,
+                            subId: chairSub._id
+                        }
+                    }).then(function(obj) {
+                        expect(obj.userId, reviewerUser._id);
+                        expect(obj.subId, chairSub._id);
+                        done();
+                    })
+                });
+        });
+
+        it('should assign the user with multiple rights to a submission', function(done) {
+            request(app)
+                .put('/api/submissions/assign/'+guestSub._id+'/' + chairUser._id)
+                .set('authorization', 'Bearer ' + chairToken)
+                .expect(201)
+                .end(function(err, res) {
+                    SubToReviewer.find({
+                        where: {
+                            userId: chairUser._id,
+                            subId: guestSub._id
+                        }
+                    }).then(function(obj) {
+                        expect(obj.userId, chairUser._id);
+                        expect(obj.subId, guestSub._id);
+                        done();
+                    })
+                });
+        });
+
+        it('shouldnt allow guest user to review', function(done) {
+            request(app)
+                .put('/api/submissions/assign/'+guestSub._id+'/' + guestUser._id)
+                .set('authorization', 'Bearer ' + chairToken)
+                .expect(403)
+                .end(done);
         });
     });
 
@@ -239,12 +286,11 @@ describe('Submission API:', function() {
                     keywords: '999',
                     abstract: 'newwww'
                 })
-                .expect(400)
-                .expect('Content-Type', /json/)
+                .expect(404)
                 .end(done);
         });
 
-        it('should send a 400 when sub is not found', function(done) {
+        it('should send a 404 when sub is not found', function(done) {
             request(app)
                 .put('/api/submissions/99999')
                 .set('authorization', 'Bearer ' + chairToken)
@@ -253,8 +299,7 @@ describe('Submission API:', function() {
                     keywords: '999',
                     abstract: 'newwww'
                 })
-                .expect(400)
-                .expect('Content-Type', /json/)
+                .expect(404)
                 .end(done);
         });
     });
