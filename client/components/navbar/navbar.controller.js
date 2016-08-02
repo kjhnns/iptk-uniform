@@ -12,7 +12,7 @@ class NavbarController {
 
   constructor(Auth) {
     this.isLoggedIn = Auth.isLoggedIn;
-    this.isAdmin = Auth.isAdmin;
+    this.isChair = Auth.isChair;
     this.getCurrentUser = Auth.getCurrentUser;
   }
 }

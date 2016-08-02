@@ -8,6 +8,6 @@ angular.module('conferenceApp.admin')
         templateUrl: 'app/admin/admin.html',
         controller: 'AdminController',
         controllerAs: 'admin',
-        authenticate: 'admin'
+        authenticate: 'chair'
       });
   });

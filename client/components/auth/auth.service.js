@@ -141,8 +141,12 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
       * @return {Bool|Promise}
       */
     hasRole(role, callback) {
-      var hasRole = function(r, h) {
-        return userRoles.indexOf(r) >= userRoles.indexOf(h);
+      var hasRole = function(roleHeHas, roleValue) {
+        if ((roleHeHas & userRoles[roleValue]) == userRoles[roleValue]) {
+            return true;
+        } else {
+            return false;
+        }
       };
 
       if (arguments.length < 2) {
@@ -165,9 +169,9 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
       * @param  {Function|*} callback - optional, function(is)
       * @return {Bool|Promise}
       */
-    isAdmin() {
+    isChair() {
       return Auth.hasRole
-        .apply(Auth, [].concat.apply(['admin'], arguments));
+        .apply(Auth, [].concat.apply(['chair'], arguments));
     },
 
     /**
