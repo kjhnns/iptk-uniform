@@ -13,6 +13,5 @@ export default function(sequelize, DataTypes) {
     status: DataTypes.INTEGER,
     keywords: DataTypes.STRING,
     abstract: DataTypes.STRING
-
   });
 }

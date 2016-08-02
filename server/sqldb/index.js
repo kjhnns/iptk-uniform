@@ -18,5 +18,20 @@ db.Thing = db.sequelize.import('../api/thing/thing.model');
 db.User = db.sequelize.import('../api/user/user.model');
 db.Submission = db.sequelize.import('../api/submission/submission.model');
 db.Review = db.sequelize.import('../api/review/review.model');
+db.Subtoreviewer = db.sequelize.import('../api/submission/subtoreviewer.model');
+
+
+db.User.belongsToMany(db.Submission, { 
+	through: db.Subtoreviewer,
+	foreignKey: '_revid'
+
+});
+
+
+db.Submission.belongsToMany(db.User, { 
+	through: db.Subtoreviewer,
+	foreignKey: '_subid'
+});
+
 
 module.exports = db;
