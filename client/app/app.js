@@ -3,6 +3,7 @@
 angular.module('conferenceApp', [
   'conferenceApp.auth',
   'conferenceApp.admin',
+  'conferenceApp.dashboard',
   'conferenceApp.constants',
   'ngCookies',
   'ngResource',
