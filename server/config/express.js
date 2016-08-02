@@ -51,8 +51,8 @@ export default function(app) {
   if ('test' !== env) {
     app.use(lusca({
       csrf: {
-        angular: true
-      },
+		  angular : true
+	  },
       xframe: 'SAMEORIGIN',
       hsts: {
         maxAge: 31536000, //1 year, in seconds
@@ -62,7 +62,7 @@ export default function(app) {
       xssProtection: true
     }));
   }
-
+  
   app.set('appPath', path.join(config.root, 'client'));
 
   if ('production' === env) {

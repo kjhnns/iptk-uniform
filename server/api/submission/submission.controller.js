@@ -10,6 +10,13 @@
 
 import _ from 'lodash';
 import {Submission} from '../../sqldb'; //lookup sqldb
+import {Subtoreviewer} from '../../sqldb';
+import {Review} from '../../sqldb';
+import {User} from '../../sqldb';
+import * as auth from '../../auth/auth.service';
+import config from '../../config/environment';
+import compose from 'composable-middleware';
+
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -127,3 +134,25 @@ export function destroy(req, res) {
     })
     .catch(handleError(res));
 }
+
+
+/**
+ *  set Reviewers to Submissions
+ */
+
+export function setassign(req, res) {
+
+  auth.checkroles('reviewer',req.user.role, 
+        Subtoreviewer.create({
+        _subid: req.params.id,
+        _revid: req.user._id
+    
+      }).then(respondWithResult(res, 201))
+      .catch(handleError(res)) 
+
+      ,res.send.status(403));
+
+}
+
+
+
