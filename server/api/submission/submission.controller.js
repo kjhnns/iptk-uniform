@@ -13,8 +13,7 @@ import {Submission} from '../../sqldb'; //lookup sqldb
 import {Subtoreviewer} from '../../sqldb';
 import {Review} from '../../sqldb';
 import {User} from '../../sqldb';
-import auth from '../../auth/auth.service';
-
+import * as auth from '../../auth/auth.service';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
