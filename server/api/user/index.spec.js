@@ -46,9 +46,9 @@ describe('User API Router:', function() {
 
   describe('GET /api/users', function() {
 
-    it('should verify admin role and route to user.controller.index', function() {
+    it('should verify chair role and route to user.controller.index', function() {
       expect(routerStub.get
-        .withArgs('/', 'authService.hasRole.admin', 'userCtrl.index')
+        .withArgs('/', 'authService.hasRole.chair', 'userCtrl.index')
         ).to.have.been.calledOnce;
     });
 
@@ -56,9 +56,9 @@ describe('User API Router:', function() {
 
   describe('DELETE /api/users/:id', function() {
 
-    it('should verify admin role and route to user.controller.destroy', function() {
+    it('should verify chair role and route to user.controller.destroy', function() {
       expect(routerStub.delete
-        .withArgs('/:id', 'authService.hasRole.admin', 'userCtrl.destroy')
+        .withArgs('/:id', 'authService.hasRole.chair', 'userCtrl.destroy')
         ).to.have.been.calledOnce;
     });
 

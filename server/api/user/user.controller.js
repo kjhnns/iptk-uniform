@@ -8,14 +8,14 @@ import jwt from 'jsonwebtoken';
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
   return function(err) {
-    res.status(statusCode).json(err);
+    return res.status(statusCode).json(err);
   }
 }
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
-    res.status(statusCode).send(err);
+    return res.status(statusCode).send(err);
   };
 }
 
@@ -47,7 +47,7 @@ export function index(req, res) {
 export function create(req, res, next) {
   var newUser = User.build(req.body);
   newUser.setDataValue('provider', 'local');
-  newUser.setDataValue('role', 0);
+  newUser.setDataValue('role', 2);
   return newUser.save()
     .then(function(user) {
       var token = jwt.sign({ _id: user._id }, config.secrets.session, {
@@ -83,9 +83,10 @@ export function show(req, res, next) {
  * restriction: 'admin'
  */
 export function destroy(req, res) {
-  return User.destroy({ _id: req.params.id })
+  var where = { _id: +req.params.id };
+  return User.destroy({'where':where})
     .then(function() {
-      res.status(204).end();
+      return res.status(204).end();
     })
     .catch(handleError(res));
 }
@@ -108,7 +109,7 @@ export function changePassword(req, res, next) {
         user.password = newPass;
         return user.save()
           .then(() => {
-            res.status(204).end();
+            return res.status(204).end();
           })
           .catch(validationError(res));
       } else {
@@ -139,7 +140,7 @@ export function me(req, res, next) {
       if (!user) {
         return res.status(401).end();
       }
-      res.json(user);
+      return res.json(user);
     })
     .catch(err => next(err));
 }
@@ -148,5 +149,5 @@ export function me(req, res, next) {
  * Authentication callback
  */
 export function authCallback(req, res, next) {
-  res.redirect('/');
+  return res.redirect('/');
 }
