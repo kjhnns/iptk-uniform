@@ -13,9 +13,7 @@ import {Submission} from '../../sqldb'; //lookup sqldb
 import {Subtoreviewer} from '../../sqldb';
 import {Review} from '../../sqldb';
 import {User} from '../../sqldb';
-import * as auth from '../../auth/auth.service';
-import config from '../../config/environment';
-import compose from 'composable-middleware';
+import auth from '../../auth/auth.service';
 
 
 function respondWithResult(res, statusCode) {
@@ -142,17 +140,17 @@ export function destroy(req, res) {
 
 export function setassign(req, res) {
 
-  auth.checkroles('reviewer',req.user.role, 
-        Subtoreviewer.create({
-        _subid: req.params.id,
-        _revid: req.user._id
-    
-      }).then(respondWithResult(res, 201))
-      .catch(handleError(res)) 
+  auth.checkRoles('reviewer',req.user.role, function() {
 
-      ,res.send.status(403));
+    Subtoreviewer.create({
+          _subid: req.params.id,
+          _revid: req.user._id  
+      })
+        .then(respondWithResult(res, 201))
+        .catch(handleError(res));
 
+  }, function() {
+    handleError(res,403);
+  });
+        
 }
-
-
-
