@@ -56,9 +56,7 @@ export function hasRole(roleRequired) {
         .use(isAuthenticated())
         .use(function meetsRequirements(req, res, next) {
             checkRoles(roleRequired, req.user.role, function() {
-                console.log("call next since it has the role");
                 return next();
-
             }, function() {
                 res.status(403).send('Forbidden');
             });
@@ -68,32 +66,28 @@ export function hasRole(roleRequired) {
 
 var validateRole = function(roles, roleHeNeeds, roleHeHas) {
     var roleValue = roles[roleHeNeeds];
-    console.log("User has role: " + roleHeHas);
-    console.log("Role required: " + roleValue + " - " + roleHeNeeds);
-    if(roles !== undefined &&  roleHeNeeds !== undefined) {
+    if (roles !== undefined && roleHeNeeds !== undefined) {
         if ((roleHeHas & roleValue) == roleValue) {
-            console.log("true has right");
+            console.log("Validate Role: has " + roleHeHas + " - needs " + roleValue + " -> granted");
             return true;
         } else {
-          console.log("doenst meet requirements");
+            console.log("Validate Role: has " + roleHeHas + " - needs " + roleValue + " -> denied");
             return false;
         }
     } else {
-      console.log("true anyway - no role req");
+        console.log("Validate Role: has " + roleHeHas + " - needs " + roleValue + " -> granted");
         return true;
     }
-};
+}
 
 export function checkRoles(rolesHeNeeds, rolesHeHas, granted, forbidden) {
     if (_.isArray(rolesHeNeeds)) {
         var result = false;
-
         _.forEach(rolesHeNeeds, function(roleRequired, key) {
             if (validateRole(config.userRoles, roleRequired, rolesHeHas)) {
                 result = true;
             }
         });
-
         if (result) {
             return granted();
         } else {

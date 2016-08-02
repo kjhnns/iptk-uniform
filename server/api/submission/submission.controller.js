@@ -9,115 +9,137 @@
 'use strict';
 
 import _ from 'lodash';
-import {Submission} from '../../sqldb'; //lookup sqldb
-import {Subtoreviewer} from '../../sqldb';
-import {Review} from '../../sqldb';
-import {User} from '../../sqldb';
+import { Submission, SubToReviewer, User } from '../../sqldb';
 import * as auth from '../../auth/auth.service';
 
 function respondWithResult(res, statusCode) {
-  statusCode = statusCode || 200;
-  return function(entity) {
-    if (entity) {
-      res.status(statusCode).json(entity);
-    }
-  };
+    statusCode = statusCode || 200;
+    return function(entity) {
+        if (entity) {
+            res.status(statusCode).json(entity);
+        }
+    };
 }
 
 function saveUpdates(updates) {
-  return function(entity) {
-    return entity.updateAttributes(updates)
-      .then(updated => {
-        return updated;
-      });
-  };
+    return function(entity) {
+        return entity.updateAttributes(updates)
+            .then(updated => {
+                return updated;
+            });
+    };
 }
 
 function removeEntity(res) {
-  return function(entity) {
-    if (entity) {
-      return entity.destroy()
-        .then(() => {
-          res.status(204).end();
-        });
-    }
-  };
+    return function(entity) {
+        if (entity) {
+            return entity.destroy()
+                .then(() => {
+                    res.status(204).end();
+                });
+        }
+    };
 }
 
 function handleEntityNotFound(res) {
-  return function(entity) {
-    if (!entity) {
-      res.status(404).end();
-      return null;
-    }
-    return entity;
-  };
+    return function(entity) {
+        if (!entity) {
+            res.status(404).end();
+            // return null;
+        } else {
+            return entity;
+        }
+    };
 }
 
 function handleError(res, statusCode) {
-  statusCode = statusCode || 500;
-  return function(err) {
-    res.status(statusCode).send(err);
-  };
+    statusCode = statusCode || 400;
+    return function(err) {
+        console.log(err);
+        res.status(statusCode).send(err);
+    };
 }
 
 // Gets a list of Things
 export function index(req, res) {
-  return Submission.findAll()
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    auth.checkRoles('chair', req.user.role, function() {
+        return Submission.findAll({ where: {} })
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    }, function() {
+        return Submission.findAll({ where: { createdBy: req.user._id } })
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    });
 }
 
 // Creates a new Submission in the DB
 export function create(req, res) {
-  return Submission.create(req.body)
-    .then(respondWithResult(res, 201))
-    .catch(handleError(res));
+    var newSub = Submission.build(req.body);
+    newSub.setDataValue('status', 0);
+    newSub.setDataValue('createdBy', req.user._id);
+    return newSub.save()
+        .then(respondWithResult(res, 201))
+        .catch(handleError(res, 400));
 }
 
 // Gets a single Submission from the DB
 export function show(req, res) {
-  return Submission.find({
-    where: {
-      _id: req.params.id
-    }
-  })
-    .then(handleEntityNotFound(res))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    auth.checkRoles('chair', req.user.role, function() {
+        return Submission.find({
+                where: {
+                    _id: req.params.id
+                }
+            })
+            .then(handleEntityNotFound(res))
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    }, function() {
+        return Submission.find({
+                where: {
+                    _id: req.params.id,
+                    createdBy: req.user._id
+                }
+            })
+            .then(handleEntityNotFound(res))
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    });
 }
 
 
 // Updates an existing Submission in the DB
 export function update(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  return Submission.find({
-    where: {
-      _id: req.params.id
+    if (req.body._id) {
+        delete req.body._id;
     }
-  })
-    .then(handleEntityNotFound(res))
-    .then(saveUpdates(req.body))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+
+    return Submission.find({
+            where: {
+                _id: req.params.id,
+                createdBy: req.user._id
+            }
+        })
+        .then(handleEntityNotFound(res))
+        .then(saveUpdates(req.body))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
 }
 
 // Updates an existing Submission file in the DB
 export function updateFile(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  return Submission.find({
-    where: {
-      _id: req.params.id
+    if (req.body._id) {
+        delete req.body._id;
     }
-  })
-    .then(handleEntityNotFound(res))
-    .then(saveUpdates(req.body))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    return Submission.find({
+            where: {
+                _id: req.params.id
+            }
+        })
+        .then(handleEntityNotFound(res))
+        .then(saveUpdates(req.body))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
 }
 
 /**
@@ -125,11 +147,14 @@ export function updateFile(req, res) {
  * restriction: 'admin'
  */
 export function destroy(req, res) {
-  return Submission.destroy({ _id: req.params.id })
-    .then(function() {
-      res.status(204).end();
-    })
-    .catch(handleError(res));
+    return Submission.destroy({
+            _id: req.params.id,
+            createdBy: req.user._id
+        })
+        .then(function(result) {
+            res.status(204).end();
+        })
+        .catch(handleError(res));
 }
 
 
@@ -137,19 +162,38 @@ export function destroy(req, res) {
  *  set Reviewers to Submissions
  */
 
-export function setassign(req, res) {
+export function assign(req, res) {
 
-  auth.checkRoles('reviewer',req.user.role, function() {
+    var userIsReviewer = function(res) {
+        return function(uObj) {
+            return auth.checkRoles("reviewer", uObj.dataValues.role, () => {
+                console.log("user has reviewer rights");
+                return uObj;
+            }, () => {
+                console.log("no rights unfortunately");
+                res.send(403).end();
+            })
+        };
+    }
 
-    Subtoreviewer.create({
-          _subid: req.params.id,
-          _revid: req.user._id  
-      })
+    var addUserAsReviewer = function(res, sId) {
+        return (uObj) => {
+            console.log("creating new relation", sId, "-", uObj.dataValues._id);
+            return SubToReviewer.create({
+                subId: sId,
+                userId: uObj.dataValues._id
+            });
+        };
+    };
+
+    return User.find({
+            where: {
+                _id: req.params.reviewerId
+            }
+        })
+        .then(handleEntityNotFound(res))
+        .then(userIsReviewer(res))
+        .then(addUserAsReviewer(res, req.params.submissionId))
         .then(respondWithResult(res, 201))
         .catch(handleError(res));
-
-  }, function() {
-    handleError(res,403);
-  });
-        
 }
