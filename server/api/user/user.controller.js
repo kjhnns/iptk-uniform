@@ -33,7 +33,7 @@ export function index(req, res) {
       'email',
       'role',
       'provider'
-    ],include:['User']
+    ]
   })
     .then(users => {
       res.status(200).json(users);
