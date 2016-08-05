@@ -233,24 +233,21 @@ export function assign(req, res) {
         };
     }
 
-    var addUserAsReviewer = function(res, sId) {
+    var addUserAsReviewer = function(res, req) {
         return (uObj) => {
-            console.log("creating new relation", sId, "-", uObj.dataValues._id);
-            return SubToReviewer.create({
-                subId: sId,
-                userId: uObj.dataValues._id
-            });
+            console.log("creating new relation s(", req.body.subId, ") <- u(", uObj.dataValues._id,")");
+            return SubToReviewer.create(req.body);
         };
     };
 
     return User.find({
             where: {
-                _id: +req.params.reviewerId
+                _id: +req.body.userId
             }
         })
         .then(handleEntityNotFound(res))
         .then(userIsReviewer(res))
-        .then(addUserAsReviewer(res, +req.params.submissionId))
+        .then(addUserAsReviewer(res, req))
         .then(respondWithResult(res, 201))
         .catch(handleError(res));
 }

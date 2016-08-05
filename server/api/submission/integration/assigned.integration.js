@@ -19,7 +19,7 @@ describe('Submission API:', function() {
 
 
 
-    describe('GET /api/submissions/assigned', function() {
+    describe('GET /api/submissions/0/assigned', function() {
         var submissions = {};
         var reviews = {};
 
@@ -32,9 +32,9 @@ describe('Submission API:', function() {
             return integrationHelper.reviews(users, submissions, reviews);
         });
 
-         it('should return 200 with a logged in user', function(done) {
+        it('should return 200 with a logged in user', function(done) {
             request(app)
-                .get('/api/submissions/assigned/')
+                .get('/api/submissions/0/assigned/')
                 .set('authorization', 'Bearer ' + users.chairToken)
                 .expect(200)
                 .expect('Content-Type', /json/)
@@ -42,14 +42,14 @@ describe('Submission API:', function() {
         });
 
 
-         it('should show two assigned submissions for the review user', function(done) {
+        it('should show two assigned submissions for the review user', function(done) {
             request(app)
-                .get('/api/submissions/assigned/')
+                .get('/api/submissions/0/assigned/')
                 .set('authorization', 'Bearer ' + users.reviewerToken)
                 .expect(200)
                 .expect('Content-Type', /json/)
                 .expect((res) => {
-                  if(res.body.Submissions.length !== 2) throw new Error("show two");
+                    if (res.body.Submissions.length !== 2) throw new Error("show two");
                 })
                 .end(done);
 

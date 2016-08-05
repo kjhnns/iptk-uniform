@@ -174,6 +174,16 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
         .apply(Auth, [].concat.apply(['chair'], arguments));
     },
 
+    isReviewer() {
+      return Auth.hasRole
+        .apply(Auth, [].concat.apply(['reviewer'], arguments));
+    },
+
+    isAuthor() {
+      return Auth.hasRole
+        .apply(Auth, [].concat.apply(['author'], arguments));
+    },
+
     /**
      * Get auth token
      *

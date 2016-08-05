@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('conferenceApp.dashboard', [
+angular.module('conferenceApp.api', [
   'conferenceApp.auth',
   'ui.router'
 ]);

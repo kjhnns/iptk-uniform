@@ -17,6 +17,9 @@ function UserResource($resource) {
       params: {
         id: 'me'
       }
+    },
+    show: {
+      method: 'GET'
     }
   });
 }

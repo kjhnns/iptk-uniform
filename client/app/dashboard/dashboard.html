@@ -1,24 +1,23 @@
 <div class="container">
-  <h1>HALLO WELT</h1>
-<form>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputFile">File input</label>
-    <input type="file" id="exampleInputFile">
-    <p class="help-block">Example block-level help text here.</p>
-  </div>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox"> Check me out
-    </label>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
+    <h1>HALLO WELT</h1>
+    <table class="table">
+        <tr>
+            <th ng-show="nav.isChair()">User</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>File</th>
+            <th>Created At</th>
+            <th>Last Update</th>
+            <th>Keywords</th>
+        </tr>
+        <tr ng-repeat="sub in dashboard.submissions">
+            <td ng-show="nav.isChair()">{{sub.createdBy | userInfo}}</td>
+            <td>{{sub.title}}</td>
+            <td><span class="label label-{{sub.status |status:true}}">{{sub.status |status}}</span></td>
+            <td>{{sub.file}}</td>
+            <td>{{sub.createdAt |date:'medium'}}</td>
+            <td>{{sub.updatedAt |date:'medium'}}</td>
+            <td>{{sub.keywords}}</td>
+        </tr>
+    </table>
 </div>

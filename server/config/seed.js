@@ -4,84 +4,141 @@
  */
 
 'use strict';
-import sqldb from '../sqldb';
-var Thing = sqldb.Thing;
-var User = sqldb.User;
-var Submission = sqldb.Submission;
 
-Thing.sync()
-  .then(() => {
-    return Thing.destroy({ where: {} });
-  })
-  .then(() => {
-    Thing.bulkCreate([{
-      name: 'Development Tools',
-      info: 'Integration with popular tools such as Bower, Grunt, Babel, Karma, ' +
-             'Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, ' +
-             'Stylus, Sass, and Less.'
-    }, {
-      name: 'Server and Client integration',
-      info: 'Built with a powerful and fun stack: MongoDB, Express, ' +
-             'AngularJS, and Node.'
-    }, {
-      name: 'Smart Build System',
-      info: 'Build system ignores `spec` files, allowing you to keep ' +
-             'tests alongside code. Automatic injection of scripts and ' +
-             'styles into your index.html'
-    }, {
-      name: 'Modular Structure',
-      info: 'Best practice client and server structures allow for more ' +
-             'code reusability and maximum scalability'
-    }, {
-      name: 'Optimized Build',
-      info: 'Build process packs up your templates as a single JavaScript ' +
-             'payload, minifies your scripts/css/images, and rewrites asset ' +
-             'names for caching.'
-    }, {
-      name: 'Deployment Ready',
-      info: 'Easily deploy your app to Heroku or Openshift with the heroku ' +
-             'and openshift subgenerators'
-    }]);
-  });
+import { Submission, User, SubToReviewer, Review } from '../sqldb';
 
-User.sync()
-  .then(() => User.destroy({ where: {} }))
-  .then(() => {
-    User.bulkCreate([{
-      provider: 'local',
-      role: 1, // author
-      name: 'Test User',
-      email: 'test@example.com',
-      password: 'test'
-    }, {
-      provider: 'local',
-      role: 7,
-      name: 'Admin',
-      email: 'admin@example.com',
-      password: 'admin'
-    }])
+var fixtures = { users: [], submissions: [] };
+
+
+Promise.all([
+        User.sync(),
+        Submission.sync(),
+        Review.sync(),
+        SubToReviewer.sync(),
+
+        SubToReviewer.destroy({ where: {} }),
+        Review.destroy({ where: {} }),
+        Submission.destroy({ where: {} }),
+        User.destroy({ where: {} })
+    ])
     .then(() => {
-      console.log('finished populating users');
-    });
-  });
+        var populate = [];
+        var users = [User.build({
+                provider: 'local',
+                role: 1, // author
+                name: 'Test User',
+                email: 'author@example.com',
+                password: 'asdasd'
+            }),
+            User.build({
+                provider: 'local',
+                role: 3, // reviewer + author
+                name: 'Reviewer',
+                email: 'reviewer@example.com',
+                password: 'asdasd'
+            }),
+            User.build({
+                provider: 'local',
+                role: 7,
+                name: 'Admin',
+                email: 'chair@example.com',
+                password: 'asdasd'
+            })
+        ];
 
-  Submission.sync()
-    .then(() => Submission.destroy({ where: {} }))
+        users.forEach((val) => {
+            populate.push(val.save().then(function(obj) {
+                fixtures.users.push(obj.dataValues);
+                return obj;
+            }));
+        });
+        return Promise.all(populate);
+    })
     .then(() => {
-      Submission.bulkCreate([{
-        title: 'Paper Uno',
-        file: 'www.google.de',
-        status: 1,
-        keywords: 'best paper ever',
-        abstract: 'this is a test'
-      }, {
-        title: 'Paper TWO',
-        file: 'www.google.de',
-        status: 4,
-        keywords: 'secondbest paper ever',
-        abstract: 'this is a test number two'
-      }])
-      .then(() => {
-        console.log('finished populating users');
-      });
+        var populate = [];
+        var subs = [{
+            title: 'Paper One',
+            file: 'www.google.de',
+            status: 1,
+            keywords: 'best paper ever',
+            abstract: 'this is a test',
+            createdBy: fixtures.users[0]._id
+        }, {
+            title: 'Paper Two',
+            file: 'www.google.de',
+            status: 4,
+            keywords: 'secondbest paper ever',
+            abstract: 'this is a test number two',
+            createdBy: fixtures.users[2]._id
+        }, {
+            title: 'Paper Three',
+            file: 'www.google.de',
+            status: 0,
+            keywords: 'fsfdsfd paper ever',
+            abstract: 'this is a test number two',
+            createdBy: fixtures.users[1]._id
+        }, {
+            title: 'Paper Four',
+            file: 'www.google.de',
+            status: 0,
+            keywords: 'fsfdsfd paper ever',
+            abstract: 'this is a test number two',
+            createdBy: fixtures.users[0]._id
+        }];
+
+        subs.forEach((val) => {
+            populate.push(Submission.create(val).then(function(obj) {
+                fixtures.submissions.push(obj.dataValues);
+                return obj;
+            }));
+        });
+        return Promise.all(populate);
+    })
+    .then(() => {
+        return Review.bulkCreate([{
+            evaluation: 'good',
+            expertise: 'high',
+            strongpoints: 'words',
+            weakpoints: 'grammar',
+            summary: 'Was a cool summary',
+            comment: 'I like summaries',
+            createdBy: fixtures.users[1]._id,
+            submissionId: fixtures.submissions[0]._id
+        }, {
+            evaluation: 'bad',
+            expertise: 'low',
+            strongpoints: 'words',
+            weakpoints: 'punctuation',
+            summary: 'something',
+            comment: 'comment comment comment comment',
+            createdBy: fixtures.users[1]._id,
+            submissionId: fixtures.submissions[1]._id
+        }, {
+            evaluation: 'qwe',
+            expertise: 'asd',
+            strongpoints: 'words',
+            weakpoints: 'punctuation',
+            summary: 'asdfdsfdsfdsf',
+            comment: 'asd asd asd asd ',
+            createdBy: fixtures.users[2]._id,
+            submissionId: fixtures.submissions[2]._id
+        }]);
+    })
+    .then(() => {
+        return SubToReviewer.bulkCreate([{
+            subId: fixtures.submissions[2]._id,
+            userId: fixtures.users[2]._id
+        }, {
+            subId: fixtures.submissions[1]._id,
+            userId: fixtures.users[1]._id
+        }, {
+            subId: fixtures.submissions[0]._id,
+            userId: fixtures.users[1]._id
+        }, {
+            subId: fixtures.submissions[3]._id,
+            userId: fixtures.users[1]._id
+        }]);
+    })
+    .then(function() {
+        console.log("Database populated");
     });

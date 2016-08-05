@@ -29,7 +29,11 @@ describe('Submission API:', function() {
 
         it('should assign the reviewer to a submission', function(done) {
             request(app)
-                .put('/api/submissions/assign/' + submissions.chairSub._id + '/' + users.reviewerUser._id)
+                .put('/api/submissions/' + submissions.chairSub._id + '/assign')
+                .send({
+                    userId: users.reviewerUser._id,
+                    subId: submissions.chairSub._id
+                })
                 .set('authorization', 'Bearer ' + users.chairToken)
                 .expect(201)
                 .expect(function(res) {
@@ -48,7 +52,11 @@ describe('Submission API:', function() {
 
         it('should assign the user with multiple rights to a submission', function(done) {
             request(app)
-                .put('/api/submissions/assign/' + submissions.guestSub._id + '/' + users.chairUser._id)
+                .put('/api/submissions/' + submissions.guestSub._id + '/assign')
+                .send({
+                    userId: users.chairUser._id,
+                    subId: submissions.guestSub._id
+                })
                 .set('authorization', 'Bearer ' + users.chairToken)
                 .expect(201)
                 .expect(function(res) {
@@ -67,7 +75,11 @@ describe('Submission API:', function() {
 
         it('shouldnt allow guest user to review', function(done) {
             request(app)
-                .put('/api/submissions/assign/' + submissions.guestSub._id + '/' + users.guestUser._id)
+                .put('/api/submissions/' + submissions.guestSub._id + '/assign')
+                .send({
+                    userId: users.guestUser._id,
+                    subId: submissions.guestSub._id
+                })
                 .set('authorization', 'Bearer ' + users.chairToken)
                 .expect(403)
                 .end(done);
