@@ -10,7 +10,8 @@ angular.module('conferenceApp.api')
                 url: '/dashboard',
                 templateUrl: 'app/dashboard/dashboard.html',
                 controller: 'DashboardController',
-                controllerAs: 'dashboard'
+                controllerAs: 'dashboard',
+                authenticate: true
             });
 
 

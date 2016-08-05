@@ -11,7 +11,7 @@
             <th>Keywords</th>
         </tr>
         <tr ng-repeat="sub in dashboard.submissions">
-            <td ng-show="nav.isChair()">{{sub.createdBy | userInfo}}</td>
+            <td ng-show="nav.isChair()">{{sub.User.name}}</td>
             <td>{{sub.title}}</td>
             <td><span class="label label-{{sub.status |status:true}}">{{sub.status |status}}</span></td>
             <td>{{sub.file}}</td>
