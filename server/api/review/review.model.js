@@ -12,7 +12,31 @@ export default function(sequelize, DataTypes) {
         expertise: DataTypes.STRING,
         strongpoints: DataTypes.STRING,
         weakpoints: DataTypes.STRING,
-        summary: DataTypes.STRING,
-        comment: DataTypes.STRING
+        summary: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            }
+        },
+        comment: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            }
+        },
+        createdBy: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        submissionId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
+    }, {
+        timestamps: true,
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt'
     });
 }

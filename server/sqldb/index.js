@@ -21,6 +21,13 @@ db.Review = db.sequelize.import('../api/review/review.model');
 db.SubToReviewer = db.sequelize.import('../api/submission/subtoreviewer.model');
 
 
+db.Review.belongsTo(db.User, {foreignKey: 'createdBy'});
+db.Review.belongsTo(db.Submission, {foreignKey: 'submissionId'});
+
+
+db.Submission.belongsTo(db.User, {foreignKey: 'createdBy'});
+
+
 db.User.belongsToMany(db.Submission, {
     through: db.SubToReviewer,
     foreignKey: 'userId'

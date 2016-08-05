@@ -9,7 +9,7 @@
 'use strict';
 
 import _ from 'lodash';
-import { Submission, SubToReviewer, User } from '../../sqldb';
+import { Submission, SubToReviewer, User, Review } from '../../sqldb';
 import * as auth from '../../auth/auth.service';
 
 function respondWithResult(res, statusCode) {
@@ -73,6 +73,50 @@ export function index(req, res) {
     });
 }
 
+// // Gets a list of Reviews
+export function reviews(req, res) {
+    auth.checkRoles('chair', req.user.role, function() {
+        return Submission.find({
+                where: {
+                    _id: +req.params.id
+                },
+                include: [Review]
+            })
+            .then(handleEntityNotFound(res))
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+
+    }, function() {
+        return Submission.find({
+                where: {
+                    _id: +req.params.id,
+                    createdBy: req.user._id
+                },
+                include: [Review]
+            })
+            .then(handleEntityNotFound(res))
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    });
+}
+
+export function assigned(req, res) {
+    return User.find({
+            where: { _id: req.user._id },
+            include: [Submission],
+            attributes: [
+                '_id',
+                'name',
+                'email',
+                'role',
+                'provider'
+            ]
+        })
+        .then(handleEntityNotFound(res))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+}
+
 
 // Creates a new Submission in the DB
 export function create(req, res) {
@@ -89,17 +133,17 @@ export function show(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
         return Submission.find({
                 where: {
-                    _id: req.params.id
+                    _id: +req.params.id
                 }
             })
             .then(handleEntityNotFound(res))
             .then(respondWithResult(res))
             .catch(handleError(res));
     }, function() {
-        auth.checkReviewerRights(req.user._id, req.params.id, () => {
+        auth.checkReviewerRights(req.user._id, +req.params.id, () => {
             return Submission.find({
                     where: {
-                        _id: req.params.id
+                        _id: +req.params.id
                     }
                 })
                 .then(handleEntityNotFound(res))
@@ -108,7 +152,7 @@ export function show(req, res) {
         }, () => {
             return Submission.find({
                     where: {
-                        _id: req.params.id,
+                        _id: +req.params.id,
                         createdBy: req.user._id
                     }
                 })
@@ -129,7 +173,7 @@ export function update(req, res) {
 
     return Submission.find({
             where: {
-                _id: req.params.id,
+                _id: +req.params.id,
                 createdBy: req.user._id
             }
         })
@@ -146,7 +190,7 @@ export function updateFile(req, res) {
     }
     return Submission.find({
             where: {
-                _id: req.params.id
+                _id: +req.params.id
             }
         })
         .then(handleEntityNotFound(res))
@@ -160,13 +204,14 @@ export function updateFile(req, res) {
  * restriction: 'admin'
  */
 export function destroy(req, res) {
-    return Submission.destroy({
-            _id: req.params.id,
-            createdBy: req.user._id
+    Submission.destroy({
+            where: {
+                _id: +req.params.id,
+                createdBy: req.user._id
+            }
         })
-        .then(function(result) {
-            res.status(204).end();
-        })
+        .then(handleEntityNotFound(res))
+        .then(respondWithResult(res, 204))
         .catch(handleError(res, 403));
 }
 
@@ -200,12 +245,12 @@ export function assign(req, res) {
 
     return User.find({
             where: {
-                _id: req.params.reviewerId
+                _id: +req.params.reviewerId
             }
         })
         .then(handleEntityNotFound(res))
         .then(userIsReviewer(res))
-        .then(addUserAsReviewer(res, req.params.submissionId))
+        .then(addUserAsReviewer(res, +req.params.submissionId))
         .then(respondWithResult(res, 201))
         .catch(handleError(res));
 }

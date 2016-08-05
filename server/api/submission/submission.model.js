@@ -32,9 +32,12 @@ export default function(sequelize, DataTypes) {
                 isNumeric: true
             }
         },
+        createdBy: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         keywords: DataTypes.STRING,
-        abstract: DataTypes.STRING,
-        createdBy: DataTypes.INTEGER
+        abstract: DataTypes.STRING
     }, {
         timestamps: true,
         createdAt: 'createdAt',
