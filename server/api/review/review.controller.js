@@ -36,7 +36,7 @@ function removeEntity(res) {
         if (entity) {
             return entity.destroy()
                 .then(() => {
-                    res.status(204).end();
+                    return res.status(204).end();
                 });
         }
     };

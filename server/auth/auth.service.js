@@ -35,7 +35,8 @@ export function isAuthenticated() {
                 })
                 .then(user => {
                     if (!user) {
-                        return res.status(401).end();
+                        res.status(401).end();
+                        return null;
                     }
                     req.user = user;
                     return next();

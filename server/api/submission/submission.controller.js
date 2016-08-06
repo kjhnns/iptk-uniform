@@ -35,7 +35,7 @@ function removeEntity(res) {
         if (entity) {
             return entity.destroy()
                 .then(() => {
-                    res.status(204).end();
+                    return res.status(204).end();
                 });
         }
     };
@@ -134,7 +134,7 @@ export function show(req, res) {
         return Submission.find({
                 where: {
                     _id: +req.params.id
-                }
+                },include: [User]
             })
             .then(handleEntityNotFound(res))
             .then(respondWithResult(res))
@@ -144,7 +144,7 @@ export function show(req, res) {
             return Submission.find({
                     where: {
                         _id: +req.params.id
-                    }
+                    },include: [User]
                 })
                 .then(handleEntityNotFound(res))
                 .then(respondWithResult(res))

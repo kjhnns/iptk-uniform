@@ -4,6 +4,7 @@ angular.module('conferenceApp', [
   'conferenceApp.auth',
   'conferenceApp.admin',
   'conferenceApp.api',
+  'conferenceApp.submissions',
   'conferenceApp.constants',
   'ngCookies',
   'ngResource',
