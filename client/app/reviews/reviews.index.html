@@ -1,0 +1,22 @@
+<div class="container">
+    <h1>Reviews</h1>
+    <table class="table">
+        <tr>
+            <th ng-show="ctrl.isChair()">User</th>
+            <th>Created by</th>
+            <th>Submission</th>
+            <th>Created At</th>
+
+        </tr>
+        <tr ng-repeat="rev in ctrl.reviews">
+
+            <td ng-show="ctrl.isChair()">{{rev.User.name}}</td>
+            <td>{{rev.createdBy}}</td>
+            <td> {{rev.submissionId}}</td>
+            <td><small>{{rev.createdAt |date:'medium'}}</small></td>
+            <td>{{rev.User.title}}</td>
+
+
+        </tr>
+    </table>
+</div>
