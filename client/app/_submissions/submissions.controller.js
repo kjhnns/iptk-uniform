@@ -19,6 +19,7 @@ class SubmissionsShowController {
         this.submission = {};
 
         this.submission = Submission.show({ id: $stateParams.id });
+        
     }
 }
 

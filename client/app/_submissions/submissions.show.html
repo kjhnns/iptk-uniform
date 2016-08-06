@@ -30,4 +30,55 @@
             <td>{{ctrl.submission.abstract}}</td>
         </tr>
     </table>
+
+
+
+        <h1>Reviews</h1>
+        <ul class="list-unstyled">
+            <li ng-repeat="review in rev.reviews">
+                <blockquote>  
+                    <cite class="clearfix">—{{review.evaluation}} on {{review.createdAt | date}}</cite>
+                </blockquote>
+            </li>
+            <li>{{ctrl.submission._id}}</li>
+        </ul>
+
+
+
+        <form class="form" >
+            <div class="form-group">
+                <label for="summaryfield"> Summary</label>
+                <textarea class="form-control" id="summaryfield" ng-model="reviewform.review.summary"></textarea>
+            </div>
+
+
+            <div class="form-group">
+                <label for="strongpointsfield"> Strong-Points</label>
+                <textarea class="form-control" id="strongpointsfield" ng-model="reviewform.review.strongpoints"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="weakpointfield"> Weak-Points</label>
+                <textarea class="form-control" id="weakpointfield" ng-model="reviewform.review.weakpoints"></textarea>
+            </div>
+
+
+            <div class="form-group">
+                <label for="evaluationfield">Evaluation</label>
+                <textarea class="form-control" id="evaluationfield" ng-model="reviewform.review.evaluation"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="expertisefield">Expertise</label>
+                <textarea class="form-control" id="expertisefield" ng-model="reviewform.review.expertise"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="comment">Comment(optional)</label>
+                <textarea class="form-control" id="commentfield" ng-model="reviewform.review.comment"></textarea>
+            </div>
+
+            <button type="submit" ng-click="reviewform.addreview()"> Submit</button>
+
+        </form>
 </div>
