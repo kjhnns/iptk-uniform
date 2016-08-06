@@ -1,6 +1,6 @@
 <div class="container" >
     <h1>{{ctrl.submission.title}}</h1>
-    <table class="table" ng-controller="SubmissionsIndexCcontroller">
+    <table class="table">
         <tr>
             <th ng-show="ctrl.isChair()">User</th>
             <td ng-show="ctrl.isChair()">{{ctrl.submission.User.name}}</td>
@@ -30,22 +30,4 @@
             <td>{{ctrl.submission.abstract}}</td>
         </tr>
     </table>
-
-
-
-
-
-    <div class="container" ng-controller="ReviewsIndexController as revctrl">
-        <h1>Reviews</h1>
-        <ul class="list-unstyled">
-            <li ng-repeat="rev in revctrl.reviews">
-                <blockquote> 
-                    <strong>{{rev.title}} Stars</strong>
-                    <cite class="clearfix">—{{rev.summary}} on {{rev.createdAt | date}}</cite>
-                </blockquote>
-            </li>
-        </ul>
-    </div>
-
-
 </div>

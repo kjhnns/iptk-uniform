@@ -22,7 +22,7 @@ angular.module('conferenceApp.reviews')
                 authenticate: true
             }).state('reviews.edit', {
                 url: '/edit/:id',
-                templateUrl: 'app/reviews/reviews.show.html',
+                templateUrl: 'app/reviews/reviews.form.html',
                 controller: 'ReviewsEditController',
                 controllerAs: 'ctrl',
                 authenticate: true

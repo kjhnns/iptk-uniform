@@ -1,0 +1,45 @@
+<div>         
+
+     <form role="form">
+
+     <div class="form-group">
+          <label for="summaryfield">Summary</label>
+            <textarea class="form-control" id="summaryfield"></textarea>
+     </div>
+
+
+     <div class="form-group">
+          <label for="strongpointsfield">Strong-Points</label>
+          <textarea class="form-control" id="strongpointsfield"></textarea>
+     </div>
+
+     <div class="form-group">
+          <label for="weakpointfield">Weakt-Points</label>
+          <textarea class="form-control" id="weakpointfield"></textarea>
+     </div>
+
+
+     <div class="form-group">
+          <label for="ratingfield">Evaluation</label>
+          <input type="number" min="0" max="10" class="form-control" id="ratingfield">
+     </div>
+
+     <div class="form-group">
+          <label for="expertisefield">Expertise</label>
+          <input type="number" min="0" max="10" class="form-control" id="expertisefield">
+     </div>
+
+     <div class="form-group">
+          <label for="comment">Comment (optional) </label>
+          <textarea class="form-control" id="commentfield"></textarea>
+     </div>
+
+
+     </form>
+
+     <button type="button" class="btn btn-default btn-sm" ui-sref="reviews.update({id:rev._id})">
+          <span class="glyphicon glyphicon-pencil"></span>
+     </button>
+
+</div>
+

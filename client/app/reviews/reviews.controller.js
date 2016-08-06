@@ -6,7 +6,6 @@ class ReviewsIndexController {
         this.isChair = Auth.isChair;
         this.getCurrentUser = Auth.getCurrentUser;
         this.reviews = [];
-        this.submissions = [];
 
         this.reviews = Review.index();
     }   
@@ -14,18 +13,28 @@ class ReviewsIndexController {
 }
 
 class ReviewsShowController{
-        constructor(Review, Auth, User, $stateParamss) {
+        constructor(Review, Auth, User, $stateParams) {
         this.isLoggedIn = Auth.isLoggedIn;
         this.isChair = Auth.isChair;
         this.getCurrentUser = Auth.getCurrentUser;
         this.review = {};
-        this.submission = {};
 
         this.review = Review.show({ id: $stateParams.id });
     }
 }
 
-class ReviewsEditController{}
+class ReviewsEditController{
+
+        constructor(Review, Auth, User, $stateParams){
+        this.isLoggedIn = Auth.isLoggedIn;
+        this.isChair = Auth.isChair;
+        this.getCurrentUser = Auth.getCurrentUser;
+        this.review = {};
+
+        this.review = Review.update(this.review);
+
+        }
+}
 
 
 
