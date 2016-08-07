@@ -1,0 +1,33 @@
+<div class="container">
+    <h1>Reviews</h1>
+    <table class="table">
+        <tr>
+            <th ng-show="ctrl.isChair()">User</th>
+            <th>Reviewed Submission</th>
+            <th>Created By</th>
+            <th>Created At</th>   
+            <th></th>
+            <th></th>
+
+
+
+        </tr>
+        <tr ng-repeat="rev in ctrl.reviews" ng-repeat="sub in ctrl.submissions">
+
+            <td><a ui-sref="submissions.show({id:rev.submissionId})">Go To Submission</a></td>
+            <td ng-show="ctrl.isChair()">{{rev.User.name}}</td>
+            <td>{{rev.createdBy}}</td>
+            <td><small>{{rev.createdAt |date:'medium'}}</small></td>
+            <td>
+            <button type="button" class="btn btn-default btn-sm" ui-sref="reviews.show({id:rev._id})">
+                 <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            </td>
+            <td>
+            <button type="button" class="btn btn-default btn-sm">
+                 <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            </td>
+        </tr>
+    </table>
+</div>
