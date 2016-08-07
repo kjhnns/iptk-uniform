@@ -1,0 +1,31 @@
+<div class="container">
+    <h1>Edit Submission</h1>
+    <div class="alert alert-success" ng-show="ctrl.success" role="alert">Created successfully</div>
+    <div class="alert alert-warning" ng-show="ctrl.badRequest" role="alert">Bad Request</div>
+    <table class="table">
+        <tr>
+            <th>Title</th>
+            <td>
+                <input type="text" class="form-control" ng-model="ctrl.submission.title" />
+            </td>
+        </tr>
+        <tr>
+            <th>Keywords</th>
+            <td>
+                <input type="text" class="form-control" ng-model="ctrl.submission.keywords" />
+            </td>
+        </tr>
+        <tr>
+            <th>Abstract</th>
+            <td>
+                <textarea class="form-control" ng-model="ctrl.submission.abstract"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th></th>
+            <td>
+                <input type="submit" class="btn btn-default" ng-click="ctrl.save()">
+            </td>
+        </tr>
+    </table>
+</div>
