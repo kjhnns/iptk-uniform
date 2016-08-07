@@ -1,27 +1,27 @@
 'use strict';
 
 class SubmissionsIndexController {
-    constructor(Submission, Auth, User) {
+    constructor(Submission, Auth, User, $window) {
         this.isChair = Auth.isChair;
         this.isAuthor = Auth.isAuthor;
+        this.$window = $window;
+        this.$submission = Submission;
 
         this.submissions = [];
 
         this.submissions = Submission.index();
     }
-}
 
-class SubmissionsShowController {
-    constructor(Submission, Auth, User, $stateParams) {
-        this.isLoggedIn = Auth.isLoggedIn;
-        this.isChair = Auth.isChair;
-        this.getCurrentUser = Auth.getCurrentUser;
-        this.submission = {};
-
-        this.submission = Submission.show({ id: $stateParams.id });
-
+    delete(pid) {
+        var confirmDelete = this.$window.confirm('Are you absolutely sure you want to delete?');
+        if (confirmDelete) {
+            this.$submission.destroy({ id: pid }, () => {
+                this.submissions = this.$submission.index();
+            });
+        }
     }
 }
+
 
 class SubmissionsEditController {
     constructor(Submission, $state, $stateParams) {
@@ -67,5 +67,4 @@ class SubmissionsEditController {
 
 angular.module('conferenceApp.submissions')
     .controller('SubmissionsIndexController', SubmissionsIndexController)
-    .controller('SubmissionsEditController', SubmissionsEditController)
-    .controller('SubmissionsShowController', SubmissionsShowController);
+    .controller('SubmissionsEditController', SubmissionsEditController);

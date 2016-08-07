@@ -21,22 +21,24 @@ db.Review = db.sequelize.import('../api/review/review.model');
 db.SubToReviewer = db.sequelize.import('../api/submission/subtoreviewer.model');
 
 
-db.Review.belongsTo(db.User, {foreignKey: 'createdBy'});
-db.Review.belongsTo(db.Submission, {foreignKey: 'submissionId'});
+db.Review.belongsTo(db.User, { foreignKey: 'createdBy', onDelete: 'CASCADE' });
+db.Review.belongsTo(db.Submission, { foreignKey: 'submissionId', onDelete: 'CASCADE' });
 
 
-db.Submission.belongsTo(db.User, {foreignKey: 'createdBy'});
+db.Submission.belongsTo(db.User, { foreignKey: 'createdBy', onDelete: 'CASCADE' });
 
 
 db.User.belongsToMany(db.Submission, {
     through: db.SubToReviewer,
-    foreignKey: 'userId'
+    foreignKey: 'userId',
+    onDelete: 'CASCADE'
 });
 
 
 db.Submission.belongsToMany(db.User, {
     through: db.SubToReviewer,
-    foreignKey: 'subId'
+    foreignKey: 'subId',
+    onDelete: 'CASCADE'
 });
 
 

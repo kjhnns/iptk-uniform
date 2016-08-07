@@ -34,11 +34,6 @@ export default function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false
         }
-        title: {
-           type: DataTypes.STRING,
-           allowNull: true
-        }
-
     }, {
         timestamps: true,
         createdAt: 'createdAt',
