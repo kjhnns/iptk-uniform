@@ -16,7 +16,7 @@
         </tr>
         <tr ng-repeat="sub in ctrl.submissions">
             <td ng-show="ctrl.isChair()">{{sub.User.name}}</td>
-            <td><small><a target="_blank" href="/api/submissions/{{sub._id}}/file"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span></a></small></td>
+            <td><small><a target="_blank" href="/api/submissions/{{sub._id}}/file"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></small></td>
             <td><a ui-sref="submissions.show({id:sub._id})">{{sub.title}}</a></td>
             <td><span class="label label-{{sub.status |status:true}}">{{sub.status |status}}</span></td>
             <td><small>{{sub.createdAt |date:'medium'}}</small></td>

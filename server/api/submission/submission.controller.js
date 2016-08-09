@@ -66,7 +66,20 @@ function handleError(res, statusCode) {
 // Gets a list of Things
 export function index(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
-        return Submission.findAll({ where: {}, include: [User], attributes: { exclude: ['file'] } })
+        return Submission.findAll({
+                where: {},
+                include: [{
+                    model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+                }],
+                attributes: { exclude: ['file'] }
+            })
             .then(respondWithResult(res))
             .catch(handleError(res));
     }, function() {
@@ -141,7 +154,16 @@ export function show(req, res) {
                 where: {
                     _id: +req.params.id
                 },
-                include: [User],
+                include: [{
+                    model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+                }],
                 attributes: { exclude: ['file'] }
             })
             .then(handleEntityNotFound(res))
@@ -153,7 +175,16 @@ export function show(req, res) {
                     where: {
                         _id: +req.params.id
                     },
-                    include: [User],
+                    include: [{
+                        model: User,
+                        attributes: [
+                            '_id',
+                            'name',
+                            'email',
+                            'role',
+                            'provider'
+                        ]
+                    }],
                     attributes: { exclude: ['file'] }
                 })
                 .then(handleEntityNotFound(res))
@@ -181,7 +212,16 @@ export function showFile(req, res) {
             where: {
                 _id: +req.params.id
             },
-            include: [User]
+            include: [{
+                model: User,
+                attributes: [
+                    '_id',
+                    'name',
+                    'email',
+                    'role',
+                    'provider'
+                ]
+            }]
         })
         .then(handleEntityNotFound(res))
         .then(((res) => {

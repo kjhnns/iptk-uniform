@@ -26,21 +26,21 @@ Promise.all([
         var users = [User.build({
                 provider: 'local',
                 role: 1, // author
-                name: 'Test User',
+                name: 'Author User',
                 email: 'author@example.com',
                 password: 'asdasd'
             }),
             User.build({
                 provider: 'local',
                 role: 3, // reviewer + author
-                name: 'Reviewer',
+                name: 'Reviewer User',
                 email: 'reviewer@example.com',
                 password: 'asdasd'
             }),
             User.build({
                 provider: 'local',
                 role: 7,
-                name: 'Admin',
+                name: 'Chair User',
                 email: 'chair@example.com',
                 password: 'asdasd'
             })

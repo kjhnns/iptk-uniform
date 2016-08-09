@@ -1,33 +1,22 @@
 <div class="container">
-    <h1>Reviews</h1>
+    <h1 ng-hide="ctrl.isChair()">My Reviews</h1>
+    <h1 ng-show="ctrl.isChair()">Reviews</h1>
     <table class="table">
         <tr>
-            <th ng-show="ctrl.isChair()">User</th>
-            <th>Reviewed Submission</th>
-            <th>Created By</th>
-            <th>Created At</th>   
             <th></th>
+            <th ng-show="ctrl.isChair()">Reviewer</th>
+            <th>Submission</th>
+            <th>Author</th>
+            <th>Created At</th>
             <th></th>
-
-
-
         </tr>
-        <tr ng-repeat="rev in ctrl.reviews" ng-repeat="sub in ctrl.submissions">
-
-            <td><a ui-sref="submissions.show({id:rev.submissionId})">Go To Submission</a></td>
+        <tr ng-repeat="rev in ctrl.reviews">
+            <td><a ui-sref="reviews.show({id:rev._id})"><span class="glyphicon glyphicon-eye-open"></span></a></td>
             <td ng-show="ctrl.isChair()">{{rev.User.name}}</td>
-            <td>{{rev.createdBy}}</td>
+            <td><a ui-sref="submissions.show({id:rev.submissionId})">{{rev.Submission.title}}</a></td>
+            <td>{{rev.Submission.User.name}}</td>
             <td><small>{{rev.createdAt |date:'medium'}}</small></td>
-            <td>
-            <button type="button" class="btn btn-default btn-sm" ui-sref="reviews.show({id:rev._id})">
-                 <span class="glyphicon glyphicon-pencil"></span>
-            </button>
-            </td>
-            <td>
-            <button type="button" class="btn btn-default btn-sm">
-                 <span class="glyphicon glyphicon-trash"></span>
-            </button>
-            </td>
+            <td><a ui-sref="reviews.show({id:rev._id})"><span class="glyphicon glyphicon-trash"></span></a></td>
         </tr>
     </table>
 </div>

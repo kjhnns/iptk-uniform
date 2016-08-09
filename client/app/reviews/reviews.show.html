@@ -1,17 +1,11 @@
-<div class="container" >
-    <h1> Review to {{ctrl.review.submissionId}}
+<div class="container">
+    <h1> Review for "{{ctrl.review.Submission.title}}"
     <button type="button" class="btn btn-default btn-sm" ui-sref="review.update({id:ctrl.review._id})">
-          <span class="glyphicon glyphicon-pencil"></span>
+          <span class="glyphicon glyphicon-pencil"></span> Edit Review
     </button>
 
     </h1>
-
     <table class="table">
-
-        <tr>
-            <th>Summary</th>
-            <td>{{ctrl.review.summary}}</td>
-        </tr>
         <tr>
             <th>Strong-Points</th>
             <td>{{ctrl.review.strongpoints}}</td>
@@ -19,10 +13,6 @@
         <tr>
             <th>Weak-Points</th>
             <td>{{ctrl.review.weakpoints}}</td>
-        </tr>
-        <tr>
-            <th>Evaluation</th>
-            <td>{{ctrl.review.evaluation}}</td>
         </tr>
         <tr>
             <th>Expertise</th>
@@ -36,6 +26,13 @@
             <th>Last Update</th>
             <td>{{ctrl.review.updatedAt |date:'medium'}}</td>
         </tr>
+        <tr>
+            <th>Evaluation</th>
+            <td>{{ctrl.review.evaluation}}</td>
+        </tr>
+        <tr>
+            <th>Summary</th>
+            <td>{{ctrl.review.summary}}</td>
+        </tr>
     </table>
-
 </div>

@@ -10,7 +10,7 @@
 'use strict';
 
 import _ from 'lodash';
-import { Review } from '../../sqldb';
+import { Review, Submission, User } from '../../sqldb';
 import * as auth from '../../auth/auth.service';
 
 function respondWithResult(res, statusCode) {
@@ -62,11 +62,61 @@ function handleError(res, statusCode) {
 // Gets a list of Things
 export function index(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
-        return Review.findAll({ where: {} })
+        return Review.findAll({
+                where: {},
+                include: [{
+                    model: Submission,
+                    attributes: { exclude: ['file'] },
+                    include: [{
+                        model: User,
+                        attributes: [
+                            '_id',
+                            'name',
+                            'email',
+                            'role',
+                            'provider'
+                        ]
+                    }]
+                }, {
+                    model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+                }]
+            })
             .then(respondWithResult(res))
             .catch(handleError(res));
     }, function() {
-        return Review.findAll({ where: { createdBy: req.user._id } })
+        return Review.findAll({
+                where: { createdBy: req.user._id },
+                include: [{
+                    model: Submission,
+                    attributes: { exclude: ['file'] },
+                    include: [{
+                        model: User,
+                        attributes: [
+                            '_id',
+                            'name',
+                            'email',
+                            'role',
+                            'provider'
+                        ]
+                    }]
+                }, {
+                    model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+                }]
+            })
             .then(respondWithResult(res))
             .catch(handleError(res));
     });
@@ -78,7 +128,30 @@ export function show(req, res) {
         return Review.find({
                 where: {
                     _id: +req.params.id
-                }
+                },
+                include: [{
+                    model: Submission,
+                    attributes: { exclude: ['file'] },
+                    include: [{
+                        model: User,
+                        attributes: [
+                            '_id',
+                            'name',
+                            'email',
+                            'role',
+                            'provider'
+                        ]
+                    }]
+                }, {
+                    model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+                }]
             })
             .then(handleEntityNotFound(res))
             .then(respondWithResult(res))
@@ -88,7 +161,30 @@ export function show(req, res) {
                 where: {
                     _id: +req.params.id,
                     createdBy: req.user._id
-                }
+                },
+                include: [{
+                    model: Submission,
+                    attributes: { exclude: ['file'] },
+                    include: [{
+                        model: User,
+                        attributes: [
+                            '_id',
+                            'name',
+                            'email',
+                            'role',
+                            'provider'
+                        ]
+                    }]
+                }, {
+                    model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+                }]
             })
             .then(handleEntityNotFound(res))
             .then(respondWithResult(res))
