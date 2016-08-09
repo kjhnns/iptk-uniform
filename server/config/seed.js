@@ -133,7 +133,7 @@ Promise.all([
             userId: fixtures.users[1]._id
         }, {
             subId: fixtures.submissions[0]._id,
-            userId: fixtures.users[1]._id
+            userId: fixtures.users[0]._id
         }, {
             subId: fixtures.submissions[3]._id,
             userId: fixtures.users[1]._id

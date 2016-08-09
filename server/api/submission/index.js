@@ -9,6 +9,7 @@ var controller = require('./submission.controller');
 var router = express.Router();
 
 router.get('/:id/assigned', auth.isAuthenticated(), controller.assigned);
+router.get('/:id/open', auth.isAuthenticated(), controller.assignedOpen);
 router.get('/', auth.isAuthenticated(), controller.index);
 router.post('/', auth.hasRole('author'), controller.create);
 router.get('/:id', auth.isAuthenticated(), controller.show);

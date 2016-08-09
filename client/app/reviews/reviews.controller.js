@@ -1,14 +1,15 @@
 'use strict';
 
 class ReviewsIndexController {
-    constructor(Review, Auth, User) {
+    constructor(Review, Auth, User, Submission) {
         this.isLoggedIn = Auth.isLoggedIn;
         this.isChair = Auth.isChair;
         this.getCurrentUser = Auth.getCurrentUser;
         this.reviews = [];
 
         this.reviews = Review.index();
-    }   
+        this.open = Submission.assignedOpen();
+    }
 
 }
 

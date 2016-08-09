@@ -136,6 +136,29 @@ export function assigned(req, res) {
         .catch(handleError(res));
 }
 
+export function assignedOpen(req, res) {
+    return User.find({
+            where: { _id: req.user._id },
+            include: [{
+                model: Submission,
+                include: [{
+                    model: Review,
+                    required: false
+                }]
+            }],
+            attributes: [
+                '_id',
+                'name',
+                'email',
+                'role',
+                'provider'
+            ]
+        })
+        .then(handleEntityNotFound(res))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+}
+
 
 // Creates a new Submission in the DB
 export function create(req, res) {

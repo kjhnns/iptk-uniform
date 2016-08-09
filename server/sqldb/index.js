@@ -27,6 +27,10 @@ db.Review.belongsTo(db.Submission, { foreignKey: 'submissionId', onDelete: 'CASC
 
 db.Submission.belongsTo(db.User, { foreignKey: 'createdBy', onDelete: 'CASCADE' });
 
+db.Submission.hasMany(db.Review, {
+    foreignKey: 'submissionId',
+    onDelete: 'CASCADE'
+});
 
 db.User.belongsToMany(db.Submission, {
     through: db.SubToReviewer,

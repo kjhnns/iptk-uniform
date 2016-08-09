@@ -49,6 +49,10 @@ export function submissions(done, users, submissions) {
         })
     ]).then(() => {
         return Promise.all([
+                           // SUBMISSION <- USER
+                           // guest <- reviewer
+                           // author <- reviewer
+
             createRelationShip(submissions.guestSub._id, users.reviewerUser._id),
             createRelationShip(submissions.authorSub._id, users.reviewerUser._id)
         ]).then(() => {
@@ -57,6 +61,10 @@ export function submissions(done, users, submissions) {
     });
 }
 
+// REVIEW -> SUBMISSION
+// author -> guest
+// reviewer -> chair
+// chair -> guest
 
 export function reviews(users, submissions, reviews) {
     reviews.reviewerReview = null;

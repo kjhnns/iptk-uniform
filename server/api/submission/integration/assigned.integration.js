@@ -55,6 +55,20 @@ describe('Submission API:', function() {
 
         });
 
+
+        it('should show two assigned open submissions for the review user', function(done) {
+            request(app)
+                .get('/api/submissions/0/open/')
+                .set('authorization', 'Bearer ' + users.reviewerToken)
+                .expect(200)
+                .expect('Content-Type', /json/)
+                .expect((res) => {
+                    if (res.body.Submissions.length !== 2) throw new Error("show two");
+                })
+                .end(done);
+
+        });
+
     });
 
 
