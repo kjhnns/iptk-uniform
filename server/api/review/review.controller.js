@@ -62,7 +62,7 @@ function handleError(res, statusCode) {
 // Gets a list of Things
 export function index(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
-        return Review.findAll({ where: {}, include:[User] })
+        return Review.findAll({ where: {} })
             .then(respondWithResult(res))
             .catch(handleError(res));
     }, function() {

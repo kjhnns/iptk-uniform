@@ -14,7 +14,8 @@ router.post('/', auth.hasRole('author'), controller.create);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.get('/:id/reviews', auth.isAuthenticated(), controller.reviews);
 router.put('/:id', auth.hasRole('author'), controller.update);
-router.put('/:id/file', auth.hasRole('author'), controller.updateFile);
+router.post('/:id/file', auth.hasRole('author'), controller.updateFile);
+router.get('/:id/file', controller.showFile);
 router.delete('/:id', auth.hasRole('author'), controller.destroy);
 router.put('/:id/assign', auth.hasRole('chair'), controller.assign);
 

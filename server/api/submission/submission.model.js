@@ -16,12 +16,19 @@ export default function(sequelize, DataTypes) {
             }
         },
         file: {
+            type: DataTypes.BLOB,
+            allowNull: true,
+            defaultValue: null
+        },
+        fileName: {
             type: DataTypes.STRING,
             allowNull: true,
-            defaultValue: null,
-            validate: {
-                isUrl: true
-            }
+            defaultValue: null
+        },
+        fileType: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
         },
         status: {
             type: DataTypes.INTEGER,

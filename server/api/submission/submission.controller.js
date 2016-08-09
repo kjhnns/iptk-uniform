@@ -11,6 +11,9 @@
 import _ from 'lodash';
 import { Submission, SubToReviewer, User, Review } from '../../sqldb';
 import * as auth from '../../auth/auth.service';
+import * as multiparty from 'multiparty';
+var FS = require('fs');
+
 
 function respondWithResult(res, statusCode) {
     statusCode = statusCode || 200;
@@ -63,7 +66,7 @@ function handleError(res, statusCode) {
 // Gets a list of Things
 export function index(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
-        return Submission.findAll({ where: {},include: [User] })
+        return Submission.findAll({ where: {}, include: [User], attributes: { exclude: ['file'] } })
             .then(respondWithResult(res))
             .catch(handleError(res));
     }, function() {
@@ -73,6 +76,7 @@ export function index(req, res) {
     });
 }
 
+
 // // Gets a list of Reviews
 export function reviews(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
@@ -80,7 +84,8 @@ export function reviews(req, res) {
                 where: {
                     _id: +req.params.id
                 },
-                include: [Review]
+                include: [Review],
+                attributes: { exclude: ['file'] }
             })
             .then(handleEntityNotFound(res))
             .then(respondWithResult(res))
@@ -92,7 +97,8 @@ export function reviews(req, res) {
                     _id: +req.params.id,
                     createdBy: req.user._id
                 },
-                include: [Review]
+                include: [Review],
+                attributes: { exclude: ['file'] }
             })
             .then(handleEntityNotFound(res))
             .then(respondWithResult(res))
@@ -134,7 +140,9 @@ export function show(req, res) {
         return Submission.find({
                 where: {
                     _id: +req.params.id
-                },include: [User]
+                },
+                include: [User],
+                attributes: { exclude: ['file'] }
             })
             .then(handleEntityNotFound(res))
             .then(respondWithResult(res))
@@ -144,7 +152,9 @@ export function show(req, res) {
             return Submission.find({
                     where: {
                         _id: +req.params.id
-                    },include: [User]
+                    },
+                    include: [User],
+                    attributes: { exclude: ['file'] }
                 })
                 .then(handleEntityNotFound(res))
                 .then(respondWithResult(res))
@@ -154,7 +164,8 @@ export function show(req, res) {
                     where: {
                         _id: +req.params.id,
                         createdBy: req.user._id
-                    }
+                    },
+                    attributes: { exclude: ['file'] }
                 })
                 .then(handleEntityNotFound(res))
                 .then(respondWithResult(res))
@@ -162,6 +173,28 @@ export function show(req, res) {
         });
 
     });
+}
+
+// Gets a single Submission from the DB
+export function showFile(req, res) {
+    return Submission.find({
+            where: {
+                _id: +req.params.id
+            },
+            include: [User]
+        })
+        .then(handleEntityNotFound(res))
+        .then(((res) => {
+            return (obj) => {
+                if (obj.fileType) {
+                    res.set('Content-Type', obj.fileType);
+                    res.send(200, obj.file);
+                } else {
+                    throw 404;
+                }
+            };
+        })(res))
+        .catch(handleError(res));
 }
 
 
@@ -185,18 +218,37 @@ export function update(req, res) {
 
 // Updates an existing Submission file in the DB
 export function updateFile(req, res) {
-    if (req.body._id) {
-        delete req.body._id;
-    }
-    return Submission.find({
-            where: {
-                _id: +req.params.id
+    var form = new multiparty.Form();
+
+    return form.parse(req, function(err, fields, files) {
+        if (err) {
+            return handleError(res, 400)(err);
+        }
+        var file = files.file[0];
+        var fileName = file.originalFilename;
+        var fileType = file.headers['content-type'];
+        FS.readFile(file.path, (err, fileData) => {
+            if (err) {
+                return handleError(res, 500)(err);
             }
-        })
-        .then(handleEntityNotFound(res))
-        .then(saveUpdates(req.body))
-        .then(respondWithResult(res))
-        .catch(handleError(res));
+            return Submission.find({
+                    where: {
+                        _id: +req.params.id
+                    }
+                })
+                .then(handleEntityNotFound(res))
+                .then(saveUpdates({
+                    'fileName': fileName,
+                    'fileType': fileType,
+                    'file': fileData
+                }))
+                .then(respondWithResult(res))
+                .catch(handleError(res));
+        });
+
+
+    });
+
 }
 
 /**
@@ -235,7 +287,7 @@ export function assign(req, res) {
 
     var addUserAsReviewer = function(res, req) {
         return (uObj) => {
-            console.log("creating new relation s(", req.body.subId, ") <- u(", uObj.dataValues._id,")");
+            console.log("creating new relation s(", req.body.subId, ") <- u(", uObj.dataValues._id, ")");
             return SubToReviewer.create(req.body);
         };
     };

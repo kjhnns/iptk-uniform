@@ -32,6 +32,12 @@ angular.module('conferenceApp.submissions')
                 controller: 'SubmissionsEditController',
                 controllerAs: 'ctrl',
                 authenticate: true
+            }).state('submissions.file', {
+                url: '/file/:id',
+                templateUrl: 'app/submissions/submissions.file.html',
+                controller: 'SubmissionsFileController',
+                controllerAs: 'ctrl',
+                authenticate: true
             });
 
 

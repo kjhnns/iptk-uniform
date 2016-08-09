@@ -42,6 +42,8 @@ describe('Submission API:', function() {
                     delete res.body.createdAt;
                     delete res.body.updatedAt;
                     delete res.body.file;
+                    delete res.body.fileName;
+                    delete res.body.fileType;
                     delete res.body.status;
                 })
                 .expect('Content-Type', /json/)

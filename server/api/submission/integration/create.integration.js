@@ -36,6 +36,8 @@ describe('Submission API:', function() {
                     delete res.body.updatedAt;
                 })
                 .expect({
+                    fileName: null,
+                    fileType: null,
                     file: null,
                     title: 'Hallo Submission',
                     abstract: 'asd',

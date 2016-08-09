@@ -38,7 +38,6 @@ describe('Review API:', function() {
                     weakpoints: 'few',
                     summary: 'SumSumSum',
                     comment: 'ComComCom',
-                    title: 'So good!',
                     submissionId: submissions.guestSub._id
                 })
                 .expect(function(res) {
@@ -54,7 +53,6 @@ describe('Review API:', function() {
                     'weakpoints': 'few',
                     'summary': 'SumSumSum',
                     'comment': 'ComComCom',
-                    'title': 'So good!',
                     'submissionId': submissions.guestSub._id,
                     'createdBy': users.reviewerUser._id
                 }, done);
