@@ -27,7 +27,7 @@ class SubmissionsFileController {
         }
 
         this.uploader.onCompleteAll = function() {
-            this.$state.go('submissions.index');
+            $state.go('submissions.index');
         };
     }
 }
@@ -75,10 +75,10 @@ class SubmissionsEditController {
 
     save() {
         if (this.id === null) {
-            this.$submission.create(this.submission, () => {
+            this.$submission.create(this.submission, (obj) => {
                 this.success = true;
                 this.badRequest = false;
-                this.$state.go('submissions.index');
+                this.$state.go('submissions.file', { id: obj._id });
             }, () => {
                 this.badRequest = true;
                 this.success = false;
