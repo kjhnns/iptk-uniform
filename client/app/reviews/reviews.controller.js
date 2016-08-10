@@ -35,21 +35,20 @@ class ReviewsShowController {
         this.getCurrentUser = Auth.getCurrentUser;
         this.review = {};
 
-        this.review = Review.show({ id: $stateParams.id });
+        this.id = +$stateParams.id || null;
+        this.review = Review.show({ id: this.id });
     }
 }
 
 
 class ReviewsEditController {
-    constructor(Review, $state, $stateParams,Submission) {
-
+    constructor(Review, $state, $stateParams, Submission) {
         this.$review = Review;
         this.review = new Review();
         this.success = false;
         this.badRequest = false;
         this.$state = $state;
         this.$review = Review;
-        this.submission = Submission.show({id:$stateParams.id});
 
         this.id = +$stateParams.id || null;
 
@@ -57,9 +56,14 @@ class ReviewsEditController {
             this.review = Review.show({ id: this.id });
             this.review._id = this.id;
         } else {
+            this.submission = Submission.show({ id: $stateParams.id });
             this.review.submissionId = this.id;
         }
 
+    }
+
+    isCreate() {
+        return this.$state.is('reviews.create');
     }
 
     save() {
