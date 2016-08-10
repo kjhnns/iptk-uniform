@@ -39,14 +39,17 @@ class ReviewsShowController {
     }
 }
 
+
 class ReviewsEditController {
-    constructor(Review, $state, $stateParams) {
+    constructor(Review, $state, $stateParams,Submission) {
+
         this.$review = Review;
         this.review = new Review();
         this.success = false;
         this.badRequest = false;
         this.$state = $state;
         this.$review = Review;
+        this.submission = Submission.show({id:$stateParams.id});
 
         this.id = +$stateParams.id || null;
 
@@ -54,13 +57,13 @@ class ReviewsEditController {
             this.review = Review.show({ id: this.id });
             this.review._id = this.id;
         } else {
-          this.review.submissionId = this.id;
+            this.review.submissionId = this.id;
         }
 
     }
 
     save() {
-        if ($state.is('reviews.create')) {
+        if (this.$state.is('reviews.create')) {
             this.$review.create(this.review, (obj) => {
                 this.success = true;
                 this.badRequest = false;
@@ -83,20 +86,9 @@ class ReviewsEditController {
     }
 }
 
- {
-    constructor(Review, Auth, User, $stateParams) {
-        this.isLoggedIn = Auth.isLoggedIn;
-        this.isChair = Auth.isChair;
-        this.getCurrentUser = Auth.getCurrentUser;
-        this.review = {};
-
-        this.review = Review.update(this.review);
-
-    }
-}
-
 
 
 angular.module('conferenceApp.reviews')
     .controller('ReviewsIndexController', ReviewsIndexController)
+    .controller('ReviewsEditController', ReviewsEditController)
     .controller('ReviewsShowController', ReviewsShowController);
