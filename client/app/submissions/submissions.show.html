@@ -14,6 +14,10 @@
             <td><a target="_blank" href="/api/submissions/{{ctrl.submission._id}}/file">{{ctrl.submission.fileName}}</a></td>
         </tr>
         <tr>
+            <th>Author</th>
+            <td>{{ctrl.submission.User.name}}</td>
+        </tr>
+        <tr>
             <th>Created At</th>
             <td>{{ctrl.submission.createdAt |date:'medium'}}</td>
         </tr>

@@ -40,7 +40,6 @@ class SubmissionsIndexController {
         this.$submission = Submission;
 
         this.submissions = [];
-
         this.submissions = Submission.index();
     }
 

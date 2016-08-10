@@ -122,14 +122,22 @@ export function reviews(req, res) {
 export function assigned(req, res) {
     return User.find({
             where: { _id: req.user._id },
-            include: [Submission],
-            attributes: [
-                '_id',
-                'name',
-                'email',
-                'role',
-                'provider'
-            ]
+            include: [{
+                mode: Submission,
+                attributes: { exclude: ['file'] },
+                include: [{
+                    model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+
+                }]
+            }],
+            attributes: ['_id']
         })
         .then(handleEntityNotFound(res))
         .then(respondWithResult(res))
@@ -141,18 +149,24 @@ export function assignedOpen(req, res) {
             where: { _id: req.user._id },
             include: [{
                 model: Submission,
+                attributes: { exclude: ['file'] },
                 include: [{
                     model: Review,
-                    required: false
+                    required: false,
+                    include: [{
+                        model: User,
+                        attributes: [
+                            '_id',
+                            'name',
+                            'email',
+                            'role',
+                            'provider'
+                        ]
+
+                    }]
                 }]
             }],
-            attributes: [
-                '_id',
-                'name',
-                'email',
-                'role',
-                'provider'
-            ]
+            attributes: ['_id']
         })
         .then(handleEntityNotFound(res))
         .then(respondWithResult(res))
