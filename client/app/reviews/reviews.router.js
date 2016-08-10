@@ -20,9 +20,15 @@ angular.module('conferenceApp.reviews')
                 controller: 'ReviewsShowController',
                 controllerAs: 'ctrl',
                 authenticate: true
-            }).state('reviews.edit', {
-                url: '/edit/:id',
+            }).state('reviews.update', {
+                url: '/update/:id',
                 templateUrl: 'app/reviews/reviews.form.html',
+                controller: 'ReviewsEditController',
+                controllerAs: 'ctrl',
+                authenticate: true
+            }).state('reviews.create', {
+                url: '/create',
+                templateUrl: 'app/reviews/reviews.create.html',
                 controller: 'ReviewsEditController',
                 controllerAs: 'ctrl',
                 authenticate: true
