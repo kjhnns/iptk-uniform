@@ -3,41 +3,44 @@
 <h1 ng-show="ctrl.isCreate()">Create Review for {{ctrl.submission.title}}</h1>
 <h1 ng-hide="ctrl.isCreate()">Edit Review for {{ctrl.review.Submission.title}}</h1>
 
-
-     <div class="form-group">
-          <label for="summaryfield">Summary</label>
-            <textarea class="form-control" id="summaryfield" ng-model="ctrl.review.summary"></textarea>
-     </div>
-
-
-     <div class="form-group">
-          <label for="strongpointsfield">Strong-Points</label>
-          <textarea class="form-control" id="strongpointsfield" ng-model="ctrl.review.strongpoints"></textarea>
-     </div>
-
-     <div class="form-group">
-          <label for="weakpointfield">Weak-Points</label>
-          <textarea class="form-control" id="weakpointfield" ng-model="ctrl.review.weakpoints"></textarea>
-     </div>
-
-
-     <div class="form-group">
-          <label for="ratingfield">Evaluation</label>
-          <input type="number" min="0" max="10" string-to-number class="form-control" id="ratingfield" ng-model="ctrl.review.evaluation">
-     </div>
-
-     <div class="form-group">
-          <label for="expertisefield">Expertise</label>
-          <input type="number" min="0" max="10" string-to-number class="form-control" id="expertisefield" ng-model="ctrl.review.expertise">
-     </div>
-
-     <div class="form-group">
-          <label for="comment">Comment </label>
-          <textarea class="form-control" id="commentfield" ng-model="ctrl.review.comment"></textarea>
-     </div>
-
-
+    <table class="table">
+        <tr>
+            <th>Summary</th>
+            <td>
+                <textarea class="form-control" ng-model="ctrl.review.summary"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>Strong-Points</th>
+            <td>
+                <textarea class="form-control" ng-model="ctrl.review.strongspoints"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>Weak-Points</th>
+            <td>
+                <textarea class="form-control" ng-model="ctrl.review.weakpoints"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>Evaluation</th>
+            <td>
+                <textarea class="form-control" ng-model="ctrl.review.evaluation"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>Expertise</th>
+            <td>
+                <textarea class="form-control" ng-model="ctrl.review.expertise"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th></th>
+            <td>
                 <input type="submit" class="btn btn-default" ng-click="ctrl.save()">
+            </td>
+        </tr>
+    </table>
 
 </div>
 

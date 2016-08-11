@@ -6,6 +6,7 @@
             id: '@_id'
         }, {
             assigned: { method: 'GET', params: { controller: 'assigned', id: '0', isArray: true } },
+            assignedOpen: { method: 'GET', params: { controller: 'open', id: '0', isArray: true } },
             index: { method: 'GET', isArray: true },
             create: { method: 'POST' },
             show: { method: 'GET' },
