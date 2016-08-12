@@ -4,6 +4,7 @@ class ReviewsIndexController {
     constructor(Review, Auth, User, Submission, $window) {
         this.isLoggedIn = Auth.isLoggedIn;
         this.isChair = Auth.isChair;
+        this.isReviewer = Auth.isReviewer;
         this.getCurrentUser = Auth.getCurrentUser;
         this.reviews = [];
         this.open = [];

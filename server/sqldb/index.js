@@ -14,7 +14,6 @@ var db = {
 };
 
 // Insert models below
-db.Thing = db.sequelize.import('../api/thing/thing.model');
 db.User = db.sequelize.import('../api/user/user.model');
 db.Submission = db.sequelize.import('../api/submission/submission.model');
 db.Review = db.sequelize.import('../api/review/review.model');
@@ -34,6 +33,7 @@ db.Submission.hasMany(db.Review, {
 
 db.User.belongsToMany(db.Submission, {
     through: db.SubToReviewer,
+    as: 'Reviewers',
     foreignKey: 'userId',
     onDelete: 'CASCADE'
 });
@@ -41,6 +41,7 @@ db.User.belongsToMany(db.Submission, {
 
 db.Submission.belongsToMany(db.User, {
     through: db.SubToReviewer,
+    as: 'Reviewers',
     foreignKey: 'subId',
     onDelete: 'CASCADE'
 });

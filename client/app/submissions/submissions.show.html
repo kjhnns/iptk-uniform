@@ -41,4 +41,23 @@
             <td>{{ctrl.submission.abstract}}</td>
         </tr>
     </table>
+    <div class="well">
+    <h1>Reviews</h1>
+        <table class="table">
+            <tr>
+                <th>Reviewer</th>
+                <th>Expertise</th>
+                <th>Evaluation</th>
+                <th>Created At</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="rev in ctrl.submission.Reviews">
+                <td>{{rev.User.name}}</td>
+                <td>{{rev.expertise}}</td>
+                <td>{{rev.evaluation}}</td>
+                <td><small>{{rev.createdAt |date:'medium'}}</small></td>
+                <td><a ui-sref="reviews.show({id:rev._id})"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+            </tr>
+        </table>
+    </div>
 </div>

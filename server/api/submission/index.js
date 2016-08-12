@@ -15,7 +15,6 @@ router.get('/:id/accept', auth.hasRole('chair'), controller.setStatusAccepted);
 router.get('/:id/close', auth.hasRole('chair'), controller.setStatusClosed);
 router.get('/:id/complete', auth.hasRole('author'), controller.setStatusCompleted);
 
-router.get('/:id/assigned', auth.isAuthenticated(), controller.assigned);
 router.get('/:id/open', auth.isAuthenticated(), controller.assignedOpen);
 router.get('/', auth.isAuthenticated(), controller.index);
 router.post('/', auth.hasRole('author'), controller.create);

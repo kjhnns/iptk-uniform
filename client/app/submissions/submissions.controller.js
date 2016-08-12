@@ -35,6 +35,7 @@ class SubmissionsFileController {
 class SubmissionsIndexController {
     constructor(Submission, Auth, $window) {
         this.isChair = Auth.isChair;
+        this.isAuthor = Auth.isAuthor;
 
         this.$window = $window;
         this.$submission = Submission;
@@ -49,6 +50,57 @@ class SubmissionsIndexController {
             this.$submission.destroy({ id: pid }, () => {
                 this.submissions = this.$submission.index();
             });
+        }
+    }
+}
+
+class SubmissionsAssignController {
+    constructor(Submission, Auth, User, $state, $stateParams, appConfig) {
+        this.$submission = Submission;
+        this.submission = new Submission();
+        this.success = false;
+        this.badRequest = false;
+        this.$state = $state;
+        this.$submission = Submission;
+
+        this.users = User.query();
+
+        this.$auth = Auth;
+
+        this.id = +$stateParams.id || null;
+
+        if (this.id !== null) {
+            this.submission = Submission.show({ id: this.id });
+            this.submission._id = this.id;
+        }
+
+
+        this.reviewerRole = appConfig.userRoles['reviewer'] || -1;
+        this.hasRole = function(roleHeHas, roleValue) {
+            if ((roleHeHas & roleValue) == roleValue) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+    }
+
+    assign(user) {
+        var tmp = new this.$submission({
+            userId: user._id,
+            subId: this.id
+        });
+
+        tmp.$assign({ id: this.id }, () => {
+            this.$state.reload();
+        });
+    }
+
+    isReviewer(user) {
+        if (user.hasOwnProperty('role')) {
+            return this.hasRole(user.role, this.reviewerRole);
+        } else {
+            return false;
         }
     }
 }
@@ -83,8 +135,6 @@ class SubmissionsEditController {
     }
 
     isState(state) {
-        console.log('isstate: '
-            state, ' == ', this.submission.status);
         if (this.submission.hasOwnProperty('status')) {
             return state == this.submission.status;
         } else {
@@ -128,5 +178,6 @@ class SubmissionsEditController {
 
 angular.module('conferenceApp.submissions')
     .controller('SubmissionsFileController', SubmissionsFileController)
+    .controller('SubmissionsAssignController', SubmissionsAssignController)
     .controller('SubmissionsIndexController', SubmissionsIndexController)
     .controller('SubmissionsEditController', SubmissionsEditController);

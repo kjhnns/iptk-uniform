@@ -17,8 +17,8 @@
                 transformResponse: (data, _) => {
                     var res = JSON.parse(data);
                     var subs = [];
-                    res.Submissions.forEach((obj) => {
-                        if (obj.Reviews.length <= 0) {
+                    res.Reviewers.forEach((obj) => {
+                        if (obj.Reviews.length <= 0 && obj.status <= 1) {
                             subs.push(obj);
                         }
                     });
@@ -41,7 +41,7 @@
             update: { method: 'PUT' },
             updateFile: { method: 'PUT', params: { controller: 'file' } },
             destroy: { method: 'DELETE' },
-            assign: { method: 'GET', params: { controller: 'assign' } }
+            assign: { method: 'PUT', params: { controller: 'assign' } }
         });
     }
 

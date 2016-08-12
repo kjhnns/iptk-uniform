@@ -25,7 +25,7 @@ Promise.all([
         var populate = [];
         var users = [User.build({
                 provider: 'local',
-                role: 1, // author
+                role: 2, // reviewer
                 name: 'Author User',
                 email: 'author@example.com',
                 password: 'asdasd'
@@ -42,6 +42,24 @@ Promise.all([
                 role: 7,
                 name: 'Chair User',
                 email: 'chair@example.com',
+                password: 'asdasd'
+            }),
+            User.build({
+                provider: 'local',
+                name: 'Random User #1',
+                email: 'user01@example.com',
+                password: 'asdasd'
+            }),
+            User.build({
+                provider: 'local',
+                name: 'Random User #2',
+                email: 'user02@example.com',
+                password: 'asdasd'
+            }),
+            User.build({
+                provider: 'local',
+                name: 'Random User #3',
+                email: 'user03@example.com',
                 password: 'asdasd'
             })
         ];

@@ -132,31 +132,6 @@ export function reviews(req, res) {
     });
 }
 
-export function assigned(req, res) {
-    return User.find({
-            where: { _id: req.user._id },
-            include: [{
-                mode: Submission,
-                attributes: { exclude: ['file'] },
-                include: [{
-                    model: User,
-                    attributes: [
-                        '_id',
-                        'name',
-                        'email',
-                        'role',
-                        'provider'
-                    ]
-
-                }]
-            }],
-            attributes: ['_id']
-        })
-        .then(handleEntityNotFound(res))
-        .then(respondWithResult(res))
-        .catch(handleError(res));
-}
-
 
 export function setStatusCompleted(req, res) {
     var updateObj = {};
@@ -224,15 +199,16 @@ export function setStatusRejected(req, res) {
         .catch(handleError(res));
 }
 
+
 export function assignedOpen(req, res) {
     return User.find({
             where: { _id: req.user._id },
             include: [{
                 model: Submission,
+                as: 'Reviewers',
                 attributes: { exclude: ['file'] },
                 include: [{
                     model: Review,
-                    required: false,
                     include: [{
                         model: User,
                         attributes: [
@@ -272,7 +248,29 @@ export function show(req, res) {
                     _id: +req.params.id
                 },
                 include: [{
+                    model: Review,
+                    include: [{
+                        model: User,
+                        attributes: [
+                            '_id',
+                            'name',
+                            'email',
+                            'role',
+                            'provider'
+                        ]
+                    }]
+                }, {
                     model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+                }, {
+                    model: User,
+                    as: 'Reviewers',
                     attributes: [
                         '_id',
                         'name',

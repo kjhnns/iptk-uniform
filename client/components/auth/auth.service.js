@@ -141,9 +141,7 @@
              * @return {Bool|Promise}
              */
             hasRole(role, callback) {
-              console.log('ASDASDS');
                 var _hasRole = function(roleHeHas, roleValue) {
-                  console.log("has " ,roleHeHas, "- needs  ",roleValue)
                     if ((roleHeHas & userRoles[roleValue]) == userRoles[roleValue]) {
                         return true;
                     } else {
@@ -152,8 +150,6 @@
                 };
 
                 if (arguments.length < 2) {
-
-                  console.log("has " ,currentUser.role, "- needs  ",role);
                     return _hasRole(currentUser.role, role);
                 }
 
@@ -192,7 +188,6 @@
              * @return {Bool|Promise}
              */
             isChair() {
-              console.log('sfsdfds');
                 return Auth.hasRole
                     .apply(Auth, [].concat.apply(['chair'], arguments));
             },

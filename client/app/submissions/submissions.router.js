@@ -20,6 +20,12 @@ angular.module('conferenceApp.submissions')
                 controller: 'SubmissionsEditController',
                 controllerAs: 'ctrl',
                 authenticate: true
+            }).state('submissions.assign', {
+                url: '/assign/:id',
+                templateUrl: 'app/submissions/submissions.assign.html',
+                controller: 'SubmissionsAssignController',
+                controllerAs: 'ctrl',
+                authenticate: true
             }).state('submissions.create', {
                 url: '/create',
                 templateUrl: 'app/submissions/submissions.create.html',
