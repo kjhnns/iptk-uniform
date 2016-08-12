@@ -1,5 +1,5 @@
 <div class="container">
-    <h1>New Reviews</h1>
+    <h1>New Reviews </h1>
     <table class="table">
         <tr>
             <th></th>
@@ -7,6 +7,7 @@
             <th>Keywords</th>
             <th>Created At</th>
             <th>Last Update</th>
+            <th></th>
         </tr>
         <tr ng-repeat="sub in ctrl.open">
             <td><small><a target="_blank" href="/api/submissions/{{sub._id}}/file"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></small></td>
@@ -14,13 +15,15 @@
             <td><small>{{sub.keywords}}</small></td>
             <td><small>{{sub.createdAt |date:'medium'}}</small></td>
             <td><small>{{sub.updatedAt |date:'medium'}}</small></td>
-            <td><a ui-sref="reviews.create({id:sub._id})"><span class="glyphicon glyphicon-pencil"></span></a> </td>
+            <td><a ui-sref="reviews.create({id:sub._id})"><span class="glyphicon glyphicon-plus"></span></a> </td>
         </tr>
     </table>
 </div>
-<div class="container">
-    <h1 ng-hide="ctrl.isChair()">My Reviews</h1>
 
+
+<div class="container">
+
+    <h1 ng-hide="ctrl.isChair()">My Reviews</h1>
     <h1 ng-show="ctrl.isChair()">Reviews</h1>
     <table class="table">
         <tr>
@@ -28,6 +31,7 @@
             <th>Submission</th>
             <th>Author</th>
             <th>Created At</th>
+            <th>Details</th>
             <th></th>
             <th></th>
         </tr>
@@ -36,7 +40,8 @@
             <td><a ui-sref="submissions.show({id:rev.submissionId})">{{rev.Submission.title}}</a></td>
             <td>{{rev.Submission.User.name}}</td>
             <td><small>{{rev.createdAt |date:'medium'}}</small></td>
-            <td><a ui-sref="reviews.show({id:rev._id})"><span class="glyphicon glyphicon-eye-open"></span> Öffnen</a></td>
+            <td><a ui-sref="reviews.show({id:rev._id})"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+            <td><a ui-sref="reviews.edit({id:rev._id})"><span class="glyphicon glyphicon-pencil""></span></a></td>
             <td><a ng-click="ctrl.delete(rev._id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
         </tr>
     </table>
