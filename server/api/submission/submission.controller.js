@@ -83,7 +83,20 @@ export function index(req, res) {
             .then(respondWithResult(res))
             .catch(handleError(res));
     }, function() {
-        return Submission.findAll({ where: { createdBy: req.user._id } })
+        return Submission.findAll({
+                where: { createdBy: req.user._id },
+                include: [{
+                    model: User,
+                    attributes: [
+                        '_id',
+                        'name',
+                        'email',
+                        'role',
+                        'provider'
+                    ]
+                }],
+                attributes: { exclude: ['file'] }
+            })
             .then(respondWithResult(res))
             .catch(handleError(res));
     });
@@ -140,6 +153,73 @@ export function assigned(req, res) {
             attributes: ['_id']
         })
         .then(handleEntityNotFound(res))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+}
+
+
+export function setStatusCompleted(req, res) {
+    var updateObj = {};
+    updateObj.status = 1;
+
+    return Submission.find({
+            where: {
+                _id: +req.params.id,
+                createdBy: req.user._id,
+                status: 0
+            }
+        })
+        .then(handleEntityNotFound(res))
+        .then(saveUpdates(updateObj))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+}
+
+export function setStatusClosed(req, res) {
+    var updateObj = {};
+    updateObj.status = 2;
+
+    return Submission.find({
+            where: {
+                _id: +req.params.id,
+                status: { lt: 2 }
+            }
+        })
+        .then(handleEntityNotFound(res))
+        .then(saveUpdates(updateObj))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+}
+
+
+export function setStatusAccepted(req, res) {
+    var updateObj = {};
+    updateObj.status = 3;
+
+    return Submission.find({
+            where: {
+                _id: +req.params.id,
+                status: { lte: 2 }
+            }
+        })
+        .then(handleEntityNotFound(res))
+        .then(saveUpdates(updateObj))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+}
+
+export function setStatusRejected(req, res) {
+    var updateObj = {};
+    updateObj.status = 4;
+
+    return Submission.find({
+            where: {
+                _id: +req.params.id,
+                status: { lte: 2 }
+            }
+        })
+        .then(handleEntityNotFound(res))
+        .then(saveUpdates(updateObj))
         .then(respondWithResult(res))
         .catch(handleError(res));
 }

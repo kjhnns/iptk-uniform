@@ -33,9 +33,9 @@ class SubmissionsFileController {
 }
 
 class SubmissionsIndexController {
-    constructor(Submission, Auth, User, $window) {
+    constructor(Submission, Auth, $window) {
         this.isChair = Auth.isChair;
-        this.isAuthor = Auth.isAuthor;
+
         this.$window = $window;
         this.$submission = Submission;
 
@@ -55,7 +55,7 @@ class SubmissionsIndexController {
 
 
 class SubmissionsEditController {
-    constructor(Submission, $state, $stateParams) {
+    constructor(Submission, Auth, $state, $stateParams) {
         this.$submission = Submission;
         this.submission = new Submission();
         this.success = false;
@@ -63,13 +63,43 @@ class SubmissionsEditController {
         this.$state = $state;
         this.$submission = Submission;
 
+        this.$auth = Auth;
+
         this.id = +$stateParams.id || null;
 
         if (this.id !== null) {
             this.submission = Submission.show({ id: this.id });
             this.submission._id = this.id;
         }
+    }
 
+    setState(state) {
+        this.$submission[state]({ id: this.id }, (obj) => {
+            this.badRequest = false;
+            this.$state.reload();
+        }, () => {
+            this.badRequest = true;
+        })
+    }
+
+    isState(state) {
+        console.log('isstate: '
+            state, ' == ', this.submission.status);
+        if (this.submission.hasOwnProperty('status')) {
+            return state == this.submission.status;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    isOwner() {
+        if (this.submission.hasOwnProperty('createdBy')) {
+            return this.$auth.hasId(this.submission.createdBy);
+        } else {
+            return false;
+        }
     }
 
     save() {

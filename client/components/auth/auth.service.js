@@ -141,7 +141,9 @@
              * @return {Bool|Promise}
              */
             hasRole(role, callback) {
-                var hasRole = function(roleHeHas, roleValue) {
+              console.log('ASDASDS');
+                var _hasRole = function(roleHeHas, roleValue) {
+                  console.log("has " ,roleHeHas, "- needs  ",roleValue)
                     if ((roleHeHas & userRoles[roleValue]) == userRoles[roleValue]) {
                         return true;
                     } else {
@@ -150,13 +152,33 @@
                 };
 
                 if (arguments.length < 2) {
-                    return hasRole(currentUser.role, role);
+
+                  console.log("has " ,currentUser.role, "- needs  ",role);
+                    return _hasRole(currentUser.role, role);
                 }
 
                 return Auth.getCurrentUser(null)
                     .then(user => {
                         var has = (user.hasOwnProperty('role')) ?
-                            hasRole(user.role, role) : false;
+                            _hasRole(user.role, role) : false;
+                        safeCb(callback)(has);
+                        return has;
+                    });
+            },
+
+            hasId(compId, callback) {
+                var _hasId = function(myId, compId) {
+                    return myId == compId;
+                };
+
+                if (arguments.length < 2) {
+                    return _hasId(currentUser._id, compId);
+                }
+
+                return Auth.getCurrentUser(null)
+                    .then(user => {
+                        var has = (user.hasOwnProperty('_id')) ?
+                            _hasId(user._id, compId) : false;
                         safeCb(callback)(has);
                         return has;
                     });
@@ -170,6 +192,7 @@
              * @return {Bool|Promise}
              */
             isChair() {
+              console.log('sfsdfds');
                 return Auth.hasRole
                     .apply(Auth, [].concat.apply(['chair'], arguments));
             },

@@ -3,6 +3,7 @@
  <button ng-show="ctrl.isAuthor()" ui-sref="submissions.create" type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Submission
     </button></h1>
+
     <table class="table">
         <tr>
             <th ng-show="ctrl.isChair()">User</th>
@@ -27,6 +28,4 @@
             <td><a ng-click="ctrl.delete(sub._id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
         </tr>
     </table>
-
-
 </div>

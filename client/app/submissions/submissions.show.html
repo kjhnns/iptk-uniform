@@ -1,10 +1,17 @@
-<div class="container" >
-    <h1>{{ctrl.submission.title}}</h1>
+<div class="container">
+    <h1>
+
+    {{ctrl.submission.title}}
+
+      <div class="btn-group" role="group" aria-label="...">
+        <button ng-if="ctrl.isOwner() && ctrl.isState(0)" class="btn btn-default btn-xs" ng-click="ctrl.setState('complete')">Set Completed</button>
+        <button ng-if="ctrl.$auth.isChair() && (ctrl.isState(1) || ctrl.isState(0))" class="btn btn-default btn-xs" ng-click="ctrl.setState('close')">Close for Reviews</button>
+        <button ng-if="ctrl.$auth.isChair() && !(ctrl.isState(3) || ctrl.isState(4))" class="btn btn-default btn-xs" ng-click="ctrl.setState('accept')">Accept Submission</button>
+        <button ng-if="ctrl.$auth.isChair() && !(ctrl.isState(3) || ctrl.isState(4))" class="btn btn-default btn-xs" ng-click="ctrl.setState('reject')">Reject Submission</button>
+      </div>
+    </h1>
+    <div class="alert alert-warning" ng-show="ctrl.badRequest" role="alert">Bad Request</div>
     <table class="table">
-        <tr>
-            <th ng-show="ctrl.isChair()">User</th>
-            <td ng-show="ctrl.isChair()">{{ctrl.submission.User.name}}</td>
-        </tr>
         <tr>
             <th>Status</th>
             <td><span class="label label-{{ctrl.submission.status |status:true}}">{{ctrl.submission.status |status}}</span></td>

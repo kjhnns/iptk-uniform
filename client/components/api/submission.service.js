@@ -5,6 +5,11 @@
         return $resource('/api/submissions/:id/:controller', {
             id: '@_id'
         }, {
+            reject: { method: 'GET', params: { controller: 'reject' } },
+            accept: { method: 'GET', params: { controller: 'accept' } },
+            close: { method: 'GET', params: { controller: 'close' } },
+            complete: { method: 'GET', params: { controller: 'complete' } },
+
             assignedOpen: {
                 method: 'GET',
                 params: { controller: 'open', id: '0' },
@@ -17,7 +22,6 @@
                             subs.push(obj);
                         }
                     });
-                    console.log(subs);
                     return subs;
                 }
             },
