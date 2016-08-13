@@ -18,6 +18,12 @@ function UserResource($resource) {
         id: 'me'
       }
     },
+    reviewer: {
+      method: 'GET',
+      params: {
+        id: 'reviewer'
+      }
+    },
     show: {
       method: 'GET'
     }

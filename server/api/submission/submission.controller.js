@@ -1,11 +1,3 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /api/things              ->  index
- * POST    /api/things              ->  create
- * GET     /api/things/:id          ->  show
- * PUT     /api/things/:id          ->  update
- */
-
 'use strict';
 
 import _ from 'lodash';

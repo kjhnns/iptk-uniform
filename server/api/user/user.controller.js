@@ -119,6 +119,25 @@ export function changePassword(req, res, next) {
 }
 
 /**
+ * become a reviewer
+ */
+export function reviewer(req, res, next) {
+  return User.find({
+    where: {
+      _id: req.user._id
+    }
+  })
+    .then(user => {
+        user.role = config.userRoles['reviewer'] + config.userRoles['author'];
+        return user.save()
+          .then(() => {
+            return res.status(204).end();
+          })
+          .catch(validationError(res));
+    });
+}
+
+/**
  * Get my info
  */
 export function me(req, res, next) {

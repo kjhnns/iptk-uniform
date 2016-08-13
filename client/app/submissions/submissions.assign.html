@@ -1,0 +1,65 @@
+<div class="container">
+    <h1>Reviewers</h1>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>E-Mail</th>
+            <th>Assign</th>
+        </tr>
+        <tr ng-repeat="user in ctrl.users" ng-if="ctrl.isReviewer(user)">
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td><a ng-click="ctrl.assign(user)" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+        </tr>
+    </table>
+    <div class="well well-lg">
+        <h2>{{ctrl.submission.title}}</h2>
+        <table class="table">
+            <tr>
+                <th>Status</th>
+                <td><span class="label label-{{ctrl.submission.status |status:true}}">{{ctrl.submission.status |status}}</span></td>
+            </tr>
+            <tr>
+                <th>File</th>
+                <td><a target="_blank" href="/api/submissions/{{ctrl.submission._id}}/file">{{ctrl.submission.fileName}}</a></td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td>{{ctrl.submission.User.name}}</td>
+            </tr>
+            <tr>
+                <th>Reviewer</th>
+                <td>
+                    <table class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Unassign</th>
+                        </tr>
+                        <tr ng-repeat="user in ctrl.submission.Reviewers">
+                            <td>{{user.name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.email}}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <th>Created At</th>
+                <td>{{ctrl.submission.createdAt |date:'medium'}}</td>
+            </tr>
+            <tr>
+                <th>Last Update</th>
+                <td>{{ctrl.submission.updatedAt |date:'medium'}}</td>
+            </tr>
+            <tr>
+                <th>Keywords</th>
+                <td>{{ctrl.submission.keywords}}</td>
+            </tr>
+            <tr>
+                <th>Abstract</th>
+                <td>{{ctrl.submission.abstract}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
