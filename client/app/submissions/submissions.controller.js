@@ -40,6 +40,8 @@ class SubmissionsIndexController {
         this.$window = $window;
         this.$submission = Submission;
 
+        this.stateFilter= {};
+
         this.submissions = [];
         this.submissions = Submission.index();
     }
