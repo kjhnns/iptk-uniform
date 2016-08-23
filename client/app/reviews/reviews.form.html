@@ -22,16 +22,23 @@
                 <textarea class="form-control" ng-model="ctrl.review.weakpoints"></textarea>
             </td>
         </tr>
-        <tr>
-            <th>Evaluation</th>
+
+        <th>Evaluation</th>
             <td>
                 <textarea class="form-control" ng-model="ctrl.review.evaluation"></textarea>
             </td>
         </tr>
         <tr>
             <th>Expertise</th>
-            <td>
-                <textarea class="form-control" ng-model="ctrl.review.expertise"></textarea>
+             <td>   
+                    <div class="form-group">
+                    <select class="form-control" ng-model="ctrl.review.expertise">
+                        <option>1 - No Expertise</option>
+                        <option>2 - Basic Knowledge</option>
+                        <option>3 - Intermediate</option>
+                        <option>4 - Expert</option>
+                     </select>
+                </div>
             </td>
         </tr>
         <tr>
