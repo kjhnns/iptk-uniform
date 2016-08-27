@@ -1,3 +1,7 @@
 {
+  "resolvers": [
+    "bower-npm-resolver"
+  ],
+
     "directory": "client/bower_components"
 }

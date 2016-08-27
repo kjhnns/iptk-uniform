@@ -6,6 +6,7 @@ angular.module('conferenceApp', [
         'conferenceApp.api',
         'conferenceApp.submissions',
         'conferenceApp.reviews',
+        'conferenceApp.charts',
         'conferenceApp.constants',
         'ngCookies',
         'ngResource',
@@ -14,7 +15,8 @@ angular.module('conferenceApp', [
         'ui.router',
         'ui.bootstrap',
         'validation.match',
-        'angularFileUpload'
+        'angularFileUpload',
+        'zingchart-angularjs'
     ])
     .config(function($urlRouterProvider, $locationProvider) {
         $urlRouterProvider

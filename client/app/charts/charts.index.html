@@ -1,0 +1,79 @@
+   <div class="main-panel">
+        <nav class="navbar navbar-default navbar-fixed">
+            <div class="container-fluid">
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Submissions Total: {{ctrl.submissions.length}}</h4>
+                                <p class="category"> Distribution by Status</p>
+                            </div>
+                            <div class="content">
+                               <zingchart id="chart1" zc-values="ctrl.countStatus(ctrl.submissions)" zc-json="ctrl.myConfig"></zingchart>
+
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Reviews Total: {{ctrl.reviews.length}}</h4>
+                                <p class="category"> Distribution by Expertise</p>
+                            </div>
+                            <div class="content">
+                               <zingchart id="chart2" zc-values="ctrl.countExpertise(ctrl.reviews)" zc-json="ctrl.reviewChartConfig"></zingchart>
+
+                            </div>
+                        </div>
+                    </div>               
+
+
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">User</h4>
+                                <p class="category">Count of User by Role</p>
+                            </div>
+                            <div class="content">
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Open Reviews</h4>
+                            </div>
+                            <div class="content">
+                                <div class="table-full-width">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Sign contract for "What are conference organizers afraid of?"</td>
+                                                <td class="td-actions text-right">
+                                                </td>
+                                            </tr>
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -16,7 +16,10 @@
     "angular-socket-io": "~0.7.0",
     "angular-ui-router": "~0.2.15",
     "angular-validation-match": "~1.5.2",
-    "angular-file-upload": "^2.3.4"
+    "angular-file-upload": "^2.3.4",
+    "zingchart": "^2.4.1",
+    "ZingChart-AngularJS": "zingchart-angularjs#^1.1.0"
+
   },
   "devDependencies": {
     "angular-mocks": "~1.5.0"

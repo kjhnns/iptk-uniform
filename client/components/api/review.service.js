@@ -5,6 +5,7 @@
         return $resource('/api/reviews/:id/:controller', {
             id: '@_id'
         }, {
+
             index: { method: 'GET', isArray: true },
             show: { method: 'GET' },
             create: { method: 'POST' },

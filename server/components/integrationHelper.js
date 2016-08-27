@@ -73,7 +73,7 @@ export function reviews(users, submissions, reviews) {
 
     var rev = Review.build({
             evaluation: 'good',
-            expertise: 'high',
+            expertise: 'High',
             strongpoints: 'words',
             weakpoints: 'grammar',
             summary: 'Was a cool summary',
@@ -83,7 +83,7 @@ export function reviews(users, submissions, reviews) {
         }),
         rev2 = Review.build({
             evaluation: 'bad',
-            expertise: 'low',
+            expertise: 'Low',
             strongpoints: 'words',
             weakpoints: 'punctuation',
             summary: 'something',
@@ -93,7 +93,7 @@ export function reviews(users, submissions, reviews) {
         }),
         rev3 = Review.build({
             evaluation: 'qwe',
-            expertise: 'asd',
+            expertise: 'No Expertise',
             strongpoints: 'words',
             weakpoints: 'punctuation',
             summary: 'asdfdsfdsfdsf',

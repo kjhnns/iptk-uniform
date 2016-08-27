@@ -115,7 +115,7 @@ Promise.all([
     .then(() => {
         return Review.bulkCreate([{
             evaluation: 'good',
-            expertise: 'high',
+            expertise: 'High',
             strongpoints: 'words',
             weakpoints: 'grammar',
             summary: 'Was a cool summary',
@@ -124,7 +124,7 @@ Promise.all([
             submissionId: fixtures.submissions[0]._id
         }, {
             evaluation: 'bad',
-            expertise: 'low',
+            expertise: 'Low',
             strongpoints: 'words',
             weakpoints: 'punctuation',
             summary: 'something',
@@ -133,7 +133,7 @@ Promise.all([
             submissionId: fixtures.submissions[1]._id
         }, {
             evaluation: 'qwe',
-            expertise: 'asd',
+            expertise: 'No Expertise',
             strongpoints: 'words',
             weakpoints: 'punctuation',
             summary: 'asdfdsfdsfdsf',
