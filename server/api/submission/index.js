@@ -27,4 +27,18 @@ router.delete('/:id', auth.hasRole('author'), controller.destroy);
 router.put('/:id/assign', auth.hasRole('chair'), controller.assign);
 
 
+router.get('/:id/incompleted', auth.hasRole('chair'), controller.getIncompleted)
+router.get('/:id/completed', auth.hasRole('chair'), controller.getCompleted)
+router.get('/:id/closed', auth.hasRole('chair'), controller.getClosed)
+router.get('/:id/accepted', auth.hasRole('chair'), controller.getAccepted)
+router.get('/:id/rejected', auth.hasRole('chair'), controller.getRejected)
+
+router.get('/test/count', auth.hasRole('chair'), controller.getTotalCount)
+
+
+
+
+
+
+
 module.exports = router;

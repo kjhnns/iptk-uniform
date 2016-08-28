@@ -47,47 +47,48 @@ class ChartsIndexController {
           ]
         };
 
+        this.usersChartConfig = {
+          "type":"bar",
+          "scale-x": {
+                "labels": ["Chair", "Author", "Reviewer", "Guest"]
+            },
 
+          "series":[
+            {
+            }
+          ]
+        };
+
+        this.sortbystatus = [];
+        this.sortbystatus.push(Submission.incompleted());
+        this.sortbystatus.push(Submission.completed());
+        this.sortbystatus.push(Submission.closed ());
+        this.sortbystatus.push(Submission.accepted());
+        this.sortbystatus.push(Submission.rejected());
+
+
+    
     }
 
-    countStatus(arr) {
+    countByStatus(arr){
+        var count = new Array(5);
 
-        var incompleted = 0;
-        var completed = 0;
-        var closed = 0;
-        var accepted = 0;
-        var rejected = 0;
-
-
-
-        for(var i = 0; i < arr.length; i++){
-            if(arr[i].status == 0){
-                incompleted++;
-            }
-
-            if(arr[i].status == 1){
-                completed++;
-            }
-            if(arr[i].status == 2){
-                closed++;
-            }
-            if(arr[i].status == 3){
-                accepted++;
-            }
-            if(arr[i].status == 4){
-                rejected++;
-            }
+        for(var i = 0; i<count.length; i++){
+            count[i] = arr[i].length;
         }
 
-        var status = [incompleted,completed,closed,accepted,rejected];
 
-
-        return status;
-
+        return count;
     }
 
 
-    countExpertise(reviews){
+
+
+
+
+
+
+    countExpertise = _.memoize(function(reviews){
 
         var result = [0,0,0,0];
         var expertise = ['No Expertise', 'Low', 'Mid', 'High'];
@@ -103,27 +104,41 @@ class ChartsIndexController {
 
         }
 
+
+
         return result;
 
 
-    }
+    });
 
 
 
 
-    countPerRole(users){
+    countPerRole = _.memoize(function(users){
 
 
-        var result = [0,0,0];
+        var result = [0,0,0,0];
+
 
         for(var i = 0; i < users.length; i++){
 
-            var rolebin = users[i].role.toString(2);
+            if(users[i].role != null){
+                var rolebin = users[i].role.toString(2);
+
+            }
+            else{
+                var rolebin = "000";
+                result[3]++;
+            }
+
 
             while(rolebin.length < 3){
 
                 rolebin = "0" + rolebin;
             }
+
+            console.log(rolebin)
+
 
             for(var y = 0; y < rolebin.length; y++){
 
@@ -139,9 +154,7 @@ class ChartsIndexController {
 
         return result;
 
-    }
-
-
+    });
 
 }
 

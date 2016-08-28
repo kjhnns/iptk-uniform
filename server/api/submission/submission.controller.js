@@ -450,3 +450,89 @@ export function assign(req, res) {
         .then(respondWithResult(res, 201))
         .catch(handleError(res));
 }
+
+
+// Gets 
+export function getIncompleted(req, res) {
+    auth.checkRoles('chair', req.user.role, function() {
+        return Submission.findAll({
+                where: {status: 0},
+                attributes: { exclude: ['file'] }
+            })
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    });
+
+}
+
+export function getCompleted(req, res) {
+    auth.checkRoles('chair', req.user.role, function() {
+        return Submission.findAll({
+                where: { status: 1},
+                attributes: { exclude: ['file'] }
+            })
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    });
+
+}
+
+export function getClosed(req, res) {
+    auth.checkRoles('chair', req.user.role, function() {
+        return Submission.findAll({
+                where: {status: 2},
+                attributes: { exclude: ['file'] }
+            })
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    });
+
+}
+
+export function getAccepted(req, res) {
+    auth.checkRoles('chair', req.user.role, function() {
+        return Submission.findAll({
+                where: {status: 3},
+                attributes: { exclude: ['file'] }
+            })
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    });
+
+}
+
+export function getRejected(req, res) {
+    auth.checkRoles('chair', req.user.role, function() {
+        return Submission.findAll({
+                where: {status: 4},
+                attributes: { exclude: ['file'] }
+            })
+            .then(respondWithResult(res))
+            .catch(handleError(res));
+    });
+
+}
+
+
+export function getTotalCount(req, res) {
+
+    var statusTypes = [0,1,2,3,4];
+    var count = new Array(5);
+
+
+        auth.checkRoles('chair', req.user.role, function() {
+
+            for(var i = 0; i < statusTypes.length; i++){
+                count[i] = Submission.count({
+                        where: {status: statusTypes[i]}
+                    });
+            }
+
+            res.send(count); 
+            return count;
+                       
+        }); 
+
+    
+
+}

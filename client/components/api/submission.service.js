@@ -25,6 +25,8 @@
                     return subs;
                 }
             },
+
+
             assigned: {
                 method: 'GET',
                 params: { controller: 'assigned', id: '0' },
@@ -41,7 +43,13 @@
             update: { method: 'PUT' },
             updateFile: { method: 'PUT', params: { controller: 'file' } },
             destroy: { method: 'DELETE' },
-            assign: { method: 'PUT', params: { controller: 'assign' } }
+            assign: { method: 'PUT', params: { controller: 'assign' } },
+            incompleted: { method: 'GET', isArray: true, params: { controller: 'incompleted', id: '0' } },
+            completed: { method: 'GET', isArray: true, params: { controller: 'completed', id: '0' } },
+            closed: { method: 'GET', isArray: true, params: { controller: 'closed', id: '0' } },
+            accepted: { method: 'GET', isArray: true, params: { controller: 'accepted', id: '0' } },
+            rejected: { method: 'GET', isArray: true, params: { controller: 'rejected', id: '0' } }
+
         });
     }
 
