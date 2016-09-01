@@ -13,5 +13,6 @@ router.get('/reviewer', auth.isAuthenticated(), controller.reviewer);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
+router.get('/:id/rolecount', auth.hasRole('chair'), controller.getCountPerRole);
 
 module.exports = router;

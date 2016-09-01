@@ -4,6 +4,7 @@ import {User} from '../../sqldb';
 import passport from 'passport';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
+import * as auth from '../../auth/auth.service';
 
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
@@ -170,3 +171,60 @@ export function me(req, res, next) {
 export function authCallback(req, res, next) {
   return res.redirect('/');
 }
+
+
+export  function getCountPerRole(req, res) {
+
+    auth.checkRoles('chair', req.user.role, function(){
+
+      console.log("test");
+
+
+    User.findAll().then(function(users){
+
+        var result = [0,0,0,0];
+
+        for(var i = 0; i < users.length; i++){
+
+
+            if(users[i].role != null){
+                var rolebin = users[i].role.toString(2);
+
+            }
+            else{
+                var rolebin = "000";
+                result[3]++;
+            }
+
+
+            while(rolebin.length < 3){
+
+                rolebin = "0" + rolebin;
+            }
+
+
+            for(var y = 0; y < rolebin.length; y++){
+
+                if(rolebin.charAt(y) == "1"){
+
+                    result[y]++;
+
+                }
+
+            }
+
+        }
+
+        console.log(result);
+        res.send(result);
+        return result;
+
+
+    });
+
+  });
+
+
+
+}
+

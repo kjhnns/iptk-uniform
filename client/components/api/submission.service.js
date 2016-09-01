@@ -48,7 +48,9 @@
             completed: { method: 'GET', isArray: true, params: { controller: 'completed', id: '0' } },
             closed: { method: 'GET', isArray: true, params: { controller: 'closed', id: '0' } },
             accepted: { method: 'GET', isArray: true, params: { controller: 'accepted', id: '0' } },
-            rejected: { method: 'GET', isArray: true, params: { controller: 'rejected', id: '0' } }
+            rejected: { method: 'GET', isArray: true, params: { controller: 'rejected', id: '0' } },
+            count: { method: 'GET', isArray: true, params: { controller: 'count', id: '0' } }
+
 
         });
     }

@@ -33,7 +33,7 @@ router.get('/:id/closed', auth.hasRole('chair'), controller.getClosed)
 router.get('/:id/accepted', auth.hasRole('chair'), controller.getAccepted)
 router.get('/:id/rejected', auth.hasRole('chair'), controller.getRejected)
 
-router.get('/test/count', auth.hasRole('chair'), controller.getTotalCount)
+router.get('/:id/count', auth.hasRole('chair'), controller.getTotalCount)
 
 
 

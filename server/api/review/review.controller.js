@@ -225,3 +225,33 @@ export function destroy(req, res) {
         .then(removeEntity(res))
         .catch(handleError(res, 400));
 }
+
+
+export function getCountByExpertise(req, res) {
+
+        var result = [0,0,0,0];
+        var expertiseArr = ['No Expertise', 'Low', 'Mid', 'High'];
+    
+
+        auth.checkRoles('chair', req.user.role, function() {
+
+            for(var i = 0; i < expertiseArr.length; i++){
+                result[i] = Review.count({
+                        where: {expertise: expertiseArr[i]}
+                    });
+            }
+
+
+        
+        Promise.all(result).then(function(data){
+
+            console.log(data)
+            res.send(data);
+            return data;
+        })
+
+
+                       
+        }); 
+
+}

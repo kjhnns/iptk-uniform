@@ -26,7 +26,8 @@ function UserResource($resource) {
     },
     show: {
       method: 'GET'
-    }
+    },
+    count: { method: 'GET', isArray: true, params: { controller: 'rolecount', id: '0' } }
   });
 }
 

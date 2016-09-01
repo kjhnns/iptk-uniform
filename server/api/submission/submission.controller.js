@@ -528,8 +528,19 @@ export function getTotalCount(req, res) {
                     });
             }
 
-            res.send(count); 
-            return count;
+
+        
+        var test = Promise.all(count);
+
+        test.then(function(data){
+            console.log(data)
+            
+            res.send(data);
+            return data;
+
+
+        });
+
                        
         }); 
 

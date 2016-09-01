@@ -12,5 +12,7 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.hasRole('reviewer'), controller.create);
 router.put('/:id',auth.hasRole('reviewer'), controller.update);
 router.delete('/:id', auth.hasRole('reviewer'), controller.destroy);
+router.get('/:id/expertisecount', auth.hasRole('chair'), controller.getCountByExpertise);
+
 
 module.exports = router;

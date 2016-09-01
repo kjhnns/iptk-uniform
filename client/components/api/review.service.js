@@ -11,6 +11,7 @@
             create: { method: 'POST' },
             update: { method: 'PUT' },
             destroy: { method: 'DELETE' },
+            expertisecount: { method: 'GET', isArray: true, params: { controller: 'expertisecount', id: '0' } }
         });
     }
 
