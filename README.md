@@ -27,14 +27,18 @@ System to review and author submissions for a conference XYZ.
 
 3. Run `./app.sh serve` to start the development server. It should automatically open the client in your browser when ready.
 
-## Build & development
+## Development
 
-Run `./app.sh build` for building and `./app.sh serve` for preview.
+Run `./app.sh serve` for preview.
 
 ## Testing
 
-Running `npm test` will run the unit tests with karma.
+Running `./app.sh test` will run the unit tests with karma.
 
+## Deployment
+
+Run `grunt build` and use the `grunt buildcontrol:heroku` command to deploy the assembled dist folder to the production system.
+You can adjust the production system repository in the `Gruntfile.js`.
 
 # Role and Access Management
 

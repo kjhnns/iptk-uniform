@@ -416,7 +416,8 @@ module.exports = function (grunt) {
       heroku: {
         options: {
           remote: 'https://git.heroku.com/iptk-uniform.git',
-          branch: 'master'
+          branch: 'master',
+          force: true
         }
       }
     },
