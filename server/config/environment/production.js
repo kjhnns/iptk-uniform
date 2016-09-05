@@ -12,7 +12,7 @@ module.exports = {
           8080,
 
   sequelize: {
-    uri:  process.env.SEQUELIZE_URI ||
+    uri:  process.env.DATABASE_URL ||
           'postgres://',
     options: {
       logging: false,
