@@ -418,13 +418,6 @@ module.exports = function (grunt) {
           remote: 'https://git.heroku.com/iptk-uniform.git',
           branch: 'master'
         }
-      },
-      openshift: {
-        options: {
-          remote: 'openshift',
-          branch: 'master',
-          remoteBranch: 'master'
-        }
       }
     },
 
