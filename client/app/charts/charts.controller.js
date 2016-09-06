@@ -22,33 +22,21 @@ class ChartsIndexController {
 
           "scale-x": {
                 "labels": ["incompleted", "completed", "closed", "accepted", "rejected"]
-            },
-          "series":[
-            {}]
+            }
         };
 
         this.reviewChartConfig = {
           "type":"bar",
           "scale-x": {
                 "labels": ["No Expertise", "Low", "Mid", "High"]
-            },
-
-          "series":[
-            {
             }
-          ]
         };
 
         this.usersChartConfig = {
           "type":"bar",
           "scale-x": {
                 "labels": ["Chair", "Author", "Reviewer", "Guest"]
-            },
-
-          "series":[
-            {
             }
-          ]
         };
 
         this.sortbystatus = [];

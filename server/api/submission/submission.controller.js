@@ -529,11 +529,11 @@ export function getRejected(req, res) {
             };
 
 
-        
-        Promise.all(arr).then(function(data){
-            
-            return data;
 
+        
+        Promise.all(arr).then(function(data){ 
+            res.send(data);      
+            return data;
 
         }).then(respondWithResult(res))
         .catch(handleError(res));

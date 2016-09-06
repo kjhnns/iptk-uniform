@@ -206,8 +206,6 @@ export  function getCountPerRole(req, res) {
                 result[3]++;
             }
 
-            console.log(rolebin);
-
 
             while(rolebin.length < 3){
 
@@ -230,7 +228,7 @@ export  function getCountPerRole(req, res) {
         return result;
 
     }).then(respondWithResult(res))
-      .then(handleError(res));
+    .catch(handleError(res));
 
   });
 
