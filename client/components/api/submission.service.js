@@ -9,6 +9,8 @@
             accept: { method: 'GET', params: { controller: 'accept' } },
             close: { method: 'GET', params: { controller: 'close' } },
             complete: { method: 'GET', params: { controller: 'complete' } },
+            closeAll: { method: 'GET', params: { controller: 'closeall', id: '0' }, isArray: true  },
+            completeAll: { method: 'GET', params: { controller: 'completeall', id: '0' }, isArray: true  },
 
             assignedOpen: {
                 method: 'GET',

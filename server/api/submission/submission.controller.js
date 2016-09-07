@@ -142,6 +142,21 @@ export function setStatusCompleted(req, res) {
         .catch(handleError(res));
 }
 
+export function massSetStatusCompleted(req, res) {
+    var updateObj = {};
+    updateObj.status = 1;
+
+    return Submission.update(
+            updateObj, {
+                where: {
+                    status: 0
+                }
+            })
+        .then(handleEntityNotFound(res))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+}
+
 export function setStatusClosed(req, res) {
     var updateObj = {};
     updateObj.status = 2;
@@ -154,6 +169,21 @@ export function setStatusClosed(req, res) {
         })
         .then(handleEntityNotFound(res))
         .then(saveUpdates(updateObj))
+        .then(respondWithResult(res))
+        .catch(handleError(res));
+}
+
+export function massSetStatusClosed(req, res) {
+    var updateObj = {};
+    updateObj.status = 2;
+
+    return Submission.update(
+            updateObj, {
+                where: {
+                    status: { lt: 2 }
+                }
+            })
+        .then(handleEntityNotFound(res))
         .then(respondWithResult(res))
         .catch(handleError(res));
 }
@@ -452,11 +482,11 @@ export function assign(req, res) {
 }
 
 
-// Gets 
+// Gets
 export function getIncompleted(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
         return Submission.findAll({
-                where: {status: 0},
+                where: { status: 0 },
                 attributes: { exclude: ['file'] }
             })
             .then(respondWithResult(res))
@@ -468,7 +498,7 @@ export function getIncompleted(req, res) {
 export function getCompleted(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
         return Submission.findAll({
-                where: { status: 1},
+                where: { status: 1 },
                 attributes: { exclude: ['file'] }
             })
             .then(respondWithResult(res))
@@ -480,7 +510,7 @@ export function getCompleted(req, res) {
 export function getClosed(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
         return Submission.findAll({
-                where: {status: 2},
+                where: { status: 2 },
                 attributes: { exclude: ['file'] }
             })
             .then(respondWithResult(res))
@@ -492,7 +522,7 @@ export function getClosed(req, res) {
 export function getAccepted(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
         return Submission.findAll({
-                where: {status: 3},
+                where: { status: 3 },
                 attributes: { exclude: ['file'] }
             })
             .then(respondWithResult(res))
@@ -504,7 +534,7 @@ export function getAccepted(req, res) {
 export function getRejected(req, res) {
     auth.checkRoles('chair', req.user.role, function() {
         return Submission.findAll({
-                where: {status: 4},
+                where: { status: 4 },
                 attributes: { exclude: ['file'] }
             })
             .then(respondWithResult(res))
@@ -515,35 +545,17 @@ export function getRejected(req, res) {
 
 
 export function getTotalCount(req, res) {
-
-    var statusTypes = [0,1,2,3,4];
+    var statusTypes = [0, 1, 2, 3, 4];
     var count = new Array(5);
-
-
-        auth.checkRoles('chair', req.user.role, function() {
-
-            for(var i = 0; i < statusTypes.length; i++){
-                count[i] = Submission.count({
-                        where: {status: statusTypes[i]}
-                    });
-            }
-
-
-        
-        var test = Promise.all(count);
-
-        test.then(function(data){
-            console.log(data)
-            
+    auth.checkRoles('chair', req.user.role, function() {
+        for (var i = 0; i < statusTypes.length; i++) {
+            count[i] = Submission.count({
+                where: { status: statusTypes[i] }
+            });
+        }
+        Promise.all(count).then(function(data) {
             res.send(data);
             return data;
-
-
         });
-
-                       
-        }); 
-
-    
-
+    });
 }

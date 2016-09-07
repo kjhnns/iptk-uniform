@@ -14,7 +14,7 @@
         <li ng-repeat="item in nav.menu" ui-sref-active="active">
             <a ui-sref="{{item.state}}">{{item.title}}</a>
         </li>
-        <li ng-show="nav.isChair()" ui-sref-active="active"><a ui-sref="admin">Users</a></li>
+        <li ng-show="nav.isChair()" ui-sref-active="active"><a ui-sref="admin">Administration</a></li>
         <li ng-show="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="submissions.index">Submissions</a></li>
         <li ng-show="nav.isReviewer()" ui-sref-active="active"><a ui-sref="reviews.index">Reviews</a></li>
         <li ng-show="nav.isChair()" ui-sref-active="active"><a ui-sref="charts.index">Statistics</a></li>

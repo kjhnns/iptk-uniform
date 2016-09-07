@@ -1,4 +1,4 @@
-<div>
+<div class="container">
     <h1>{{ctrl.submission.title}}</h1>
     <input type="file" nv-file-select="" name="file" uploader="ctrl.uploader" />
     <button type="button" class="btn btn-success btn-s" ng-click="ctrl.uploader.uploadAll()" ng-disabled="!ctrl.uploader.getNotUploadedItems().length">

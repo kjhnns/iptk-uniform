@@ -44,7 +44,7 @@ export default function(sequelize, DataTypes) {
             allowNull: false
         },
         keywords: DataTypes.STRING,
-        abstract: DataTypes.STRING
+        abstract: DataTypes.TEXT
     }, {
         timestamps: true,
         createdAt: 'createdAt',

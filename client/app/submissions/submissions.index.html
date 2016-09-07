@@ -1,17 +1,23 @@
 <div class="container">
     <h1>Submissions
- <button ng-show="ctrl.isAuthor()" ui-sref="submissions.create" type="button" class="btn btn-default">
+ <button ng-if="ctrl.isAuthor()" ui-sref="submissions.create" type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Submission
     </button></h1>
 
-   <div class="btn-group" ng-show="ctrl.isChair()">
+    <h3>Schedule Management</h3>
+    <div class="btn-group" role="group" ng-if="ctrl.isChair()">
+        <button class="btn btn-default" ng-click="ctrl.setState('complete')">Set All Submissions Completed</button>
+        <button class="btn btn-default" ng-click="ctrl.setState('close')">Close All Submissions For Review</button>
+    </div>
+
+    <h3>Filtering</h3>
+    <div class="btn-group" ng-if="ctrl.isChair()">
         <label class="btn btn-default" ng-model="ctrl.stateFilter.status" uib-btn-checkbox btn-checkbox-true="0" btn-checkbox-false="">incompleted</label>
         <label class="btn btn-default" ng-model="ctrl.stateFilter.status" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="">completed</label>
         <label class="btn btn-default" ng-model="ctrl.stateFilter.status" uib-btn-checkbox btn-checkbox-true="2" btn-checkbox-false="">closed</label>
         <label class="btn btn-default" ng-model="ctrl.stateFilter.status" uib-btn-checkbox btn-checkbox-true="3" btn-checkbox-false="">accepted</label>
         <label class="btn btn-default" ng-model="ctrl.stateFilter.status" uib-btn-checkbox btn-checkbox-true="4" btn-checkbox-false="">rejected</label>
     </div>
-
 
     <table class="table">
         <tr>

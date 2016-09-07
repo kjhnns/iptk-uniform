@@ -33,17 +33,29 @@ class SubmissionsFileController {
 }
 
 class SubmissionsIndexController {
-    constructor(Submission, Auth, $window) {
+    constructor(Submission, Auth, $window, $state) {
         this.isChair = Auth.isChair;
         this.isAuthor = Auth.isAuthor;
 
+        this.$state = $state;
         this.$window = $window;
         this.$submission = Submission;
 
-        this.stateFilter= {};
+        this.stateFilter = {};
 
         this.submissions = [];
         this.submissions = Submission.index();
+    }
+
+
+
+    setState(state) {
+        this.$submission[state + "All"]((obj) => {
+            this.badRequest = false;
+            this.$state.reload();
+        }, () => {
+            this.badRequest = true;
+        })
     }
 
     delete(pid) {

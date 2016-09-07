@@ -8,19 +8,19 @@ export default function(sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true
         },
-        evaluation: DataTypes.STRING,
-        expertise: DataTypes.STRING,
-        strongpoints: DataTypes.STRING,
-        weakpoints: DataTypes.STRING,
+        evaluation: DataTypes.TEXT,
+        expertise: DataTypes.TEXT,
+        strongpoints: DataTypes.TEXT,
+        weakpoints: DataTypes.TEXT,
         summary: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
             validate: {
                 notEmpty: true
             }
         },
         comment: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
             validate: {
                 notEmpty: true
