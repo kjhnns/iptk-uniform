@@ -1,7 +1,25 @@
 <div class="container">
-    <h1>{{ctrl.submission.title}}</h1>
-    <input type="file" nv-file-select="" name="file" uploader="ctrl.uploader" />
-    <button type="button" class="btn btn-success btn-s" ng-click="ctrl.uploader.uploadAll()" ng-disabled="!ctrl.uploader.getNotUploadedItems().length">
-        <span class="glyphicon glyphicon-upload"></span> Upload all
-    </button>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>{{ctrl.submission.title}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well">
+                <table >
+                    <tr>
+                        <td style="width:80%">
+                            <input type="file" nv-file-select="" name="file" uploader="ctrl.uploader" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success btn-s" ng-click="ctrl.uploader.uploadAll()" ng-disabled="!ctrl.uploader.getNotUploadedItems().length">
+                                <span class="glyphicon glyphicon-upload"></span> Upload all
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
