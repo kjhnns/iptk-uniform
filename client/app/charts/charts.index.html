@@ -1,59 +1,42 @@
-   <div class="main-panel">
-        <nav class="navbar navbar-default navbar-fixed">
-            <div class="container-fluid">
-
-
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Submissions Total: {{ctrl.submissions.length}}</h4>
-                                <p class="category"> Distribution by Status</p>
-                                <div></div>
-                            </div>
-                            <div class="content">
-                               <zingchart id="chart1" zc-values="ctrl.sortbystatus" zc-json="ctrl.myConfig"></zingchart>
-
-                            </div>
-                        </div>
-                    </div>
-
-                     <div class="col-md-4">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Reviews Total: {{ctrl.reviews.length}}</h4>
-                                <p class="category"> Distribution by Expertise</p>
-                            </div>
-                            <div class="content">
-                            <zingchart id="chart2" zc-values="ctrl.expertisecount" zc-json="ctrl.reviewChartConfig"></zingchart>
-                            </div>
-                        </div>
-                    </div>               
-
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Submissions Total: {{ctrl.submissions.length}}</h4>
+                    <p class="category"> Distribution by Status</p>
+                    <div></div>
                 </div>
-
-
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card ">
-                            <div class="header">
-                                <h4 class="title">User Total: {{ctrl.users.length}}</h4>
-                                <p class="category">Count of User by Role</p>
-                            </div>
-                            <div class="content">
-
-                            <zingchart id="chart3" zc-values="ctrl.rolecount" zc-json="ctrl.usersChartConfig"></zingchart>
-
-                            </div>
-                        </div>
-                    </div>
-
-
+                <div class="content">
+                    <zingchart id="chart1" zc-values="ctrl.sortbystatus" zc-json="ctrl.myConfig"></zingchart>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Reviews Total: {{ctrl.reviews.length}}</h4>
+                    <p class="category"> Distribution by Expertise</p>
+                </div>
+                <div class="content">
+                    <zingchart id="chart2" zc-values="ctrl.expertisecount" zc-json="ctrl.reviewChartConfig"></zingchart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card ">
+                <div class="header">
+                    <h4 class="title">User Total: {{ctrl.users.length}}</h4>
+                    <p class="category">Count of User by Role</p>
+                </div>
+                <div class="content">
+                    <zingchart id="chart3" zc-values="ctrl.rolecount" zc-json="ctrl.usersChartConfig"></zingchart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
