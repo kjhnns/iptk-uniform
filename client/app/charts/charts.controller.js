@@ -7,59 +7,36 @@ class ChartsIndexController {
         this.getCurrentUser = Auth.getCurrentUser;
         this.reviews = [];
         this.submissions = [];
+        this.users = [];
         this.$window = $window;
         this.$review = Review;
         this.$submission = Submission;
 
         this.reviews = Review.index();
         this.submissions = Submission.index();
-
-        this.assigned = [];
-        this.assignedOpen = [];
-        this.assigned = Submission.assigned();
-        this.assignedOpen = Submission.assignedOpen();
-
-
-
-
-
         this.users = User.query();
 
 
         this.myConfig = {
-          "type":"bar",
+          "type": "bar",
 
           "scale-x": {
                 "labels": ["incompleted", "completed", "closed", "accepted", "rejected"]
-            },
-          "series":[
-            {
             }
-          ]
         };
 
         this.reviewChartConfig = {
           "type":"bar",
           "scale-x": {
                 "labels": ["No Expertise", "Low", "Mid", "High"]
-            },
-
-          "series":[
-            {
             }
-          ]
         };
 
         this.usersChartConfig = {
           "type":"bar",
           "scale-x": {
                 "labels": ["Chair", "Author", "Reviewer", "Guest"]
-            },
-
-          "series":[
-            {
             }
-          ]
         };
 
         this.sortbystatus = [];

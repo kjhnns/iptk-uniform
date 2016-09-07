@@ -6,6 +6,17 @@ import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 import * as auth from '../../auth/auth.service';
 
+
+
+function respondWithResult(res, statusCode) {
+    statusCode = statusCode || 200;
+    return function(entity) {
+        if (entity) {
+            res.status(statusCode).json(entity);
+        }
+    };
+}
+
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
   return function(err) {
@@ -177,7 +188,6 @@ export  function getCountPerRole(req, res) {
 
     auth.checkRoles('chair', req.user.role, function(){
 
-      console.log("test");
 
 
     User.findAll().then(function(users){
@@ -186,13 +196,13 @@ export  function getCountPerRole(req, res) {
 
         for(var i = 0; i < users.length; i++){
 
+            var rolebin = "000";
 
             if(users[i].role != null){
-                var rolebin = users[i].role.toString(2);
+              rolebin = users[i].role.toString(2);
 
             }
             else{
-                var rolebin = "000";
                 result[3]++;
             }
 
@@ -215,12 +225,10 @@ export  function getCountPerRole(req, res) {
 
         }
 
-        console.log(result);
-        res.send(result);
         return result;
 
-
-    });
+    }).then(respondWithResult(res))
+    .catch(handleError(res));
 
   });
 

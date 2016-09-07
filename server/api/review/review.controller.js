@@ -241,14 +241,14 @@ export function getCountByExpertise(req, res) {
                     });
             }
 
-
         
         Promise.all(result).then(function(data){
-
-            console.log(data)
-            res.send(data);
+            
+            
             return data;
-        })
+
+        }).then(respondWithResult(res))
+        .catch(handleError(res));
 
 
                        

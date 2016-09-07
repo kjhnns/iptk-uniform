@@ -545,17 +545,17 @@ export function getRejected(req, res) {
 
 
 export function getTotalCount(req, res) {
-    var statusTypes = [0, 1, 2, 3, 4];
-    var count = new Array(5);
+    var arr = new Array(5);
     auth.checkRoles('chair', req.user.role, function() {
-        for (var i = 0; i < statusTypes.length; i++) {
-            count[i] = Submission.count({
-                where: { status: statusTypes[i] }
+        for (var i = 0; i < arr.length; i++) {
+            arr[i] = Submission.count({
+                where: { status: i }
             });
-        }
-        Promise.all(count).then(function(data) {
-            res.send(data);
-            return data;
-        });
+        };
+        Promise.all(arr).then(function(data) {
+                res.send(data);
+                return data;
+            }).then(respondWithResult(res))
+            .catch(handleError(res));
     });
 }
