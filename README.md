@@ -39,7 +39,7 @@ Run `./app.sh serve` for preview.
 
 ## Testing
 
-Running `./app.sh test` will run the unit tests with karma.
+Running `./app.sh test` will run the integration tests with mocha to ensure that the CRUD functionalities are covered.
 
 ## Deployment
 
