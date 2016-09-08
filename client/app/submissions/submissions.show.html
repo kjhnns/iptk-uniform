@@ -4,7 +4,7 @@
     {{ctrl.submission.title}}
 
       <div class="btn-group" role="group" aria-label="...">
-        <button ng-if="ctrl.isOwner() && ctrl.isState(0)" class="btn btn-default btn-xs" ng-click="ctrl.setState('complete')">Set Completed</button>
+        <button ng-if="(ctrl.isOwner() || ctrl.$auth.isChair())  && ctrl.isState(0)" class="btn btn-default btn-xs" ng-click="ctrl.setState('complete')">Set Completed</button>
         <button ng-if="ctrl.$auth.isChair() && (ctrl.isState(1) || ctrl.isState(0))" class="btn btn-default btn-xs" ng-click="ctrl.setState('close')">Close for Reviews</button>
         <button ng-if="ctrl.$auth.isChair() && !(ctrl.isState(3) || ctrl.isState(4))" class="btn btn-default btn-xs" ng-click="ctrl.setState('accept')">Accept Submission</button>
         <button ng-if="ctrl.$auth.isChair() && !(ctrl.isState(3) || ctrl.isState(4))" class="btn btn-default btn-xs" ng-click="ctrl.setState('reject')">Reject Submission</button>
@@ -42,7 +42,7 @@
         </tr>
     </table>
     <div class="well" ng-if="ctrl.$auth.isReviewer()">
-    <h1>Reviews</h1>
+        <h1>Reviews</h1>
         <table class="table">
             <tr>
                 <th>Reviewer</th>

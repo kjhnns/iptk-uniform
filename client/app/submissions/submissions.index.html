@@ -4,13 +4,13 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Submission
     </button></h1>
 
-    <h3>Schedule Management</h3>
+    <h3  ng-if="ctrl.isChair()">Schedule Management</h3>
     <div class="btn-group" role="group" ng-if="ctrl.isChair()">
         <button class="btn btn-default" ng-click="ctrl.setState('complete')">Set All Submissions Completed</button>
         <button class="btn btn-default" ng-click="ctrl.setState('close')">Close All Submissions For Review</button>
     </div>
 
-    <h3>Filtering</h3>
+    <h3 ng-if="ctrl.isChair()">Filtering</h3>
     <div class="btn-group" ng-if="ctrl.isChair()">
         <label class="btn btn-default" ng-model="ctrl.stateFilter.status" uib-btn-checkbox btn-checkbox-true="0" btn-checkbox-false="">incompleted</label>
         <label class="btn btn-default" ng-model="ctrl.stateFilter.status" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="">completed</label>

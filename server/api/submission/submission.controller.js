@@ -132,7 +132,6 @@ export function setStatusCompleted(req, res) {
     return Submission.find({
             where: {
                 _id: +req.params.id,
-                createdBy: req.user._id,
                 status: 0
             }
         })

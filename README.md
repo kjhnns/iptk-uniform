@@ -2,6 +2,12 @@
 
 System to review and author submissions for a conference XYZ. 
 
+See a live demo at https://iptk-uniform.herokuapp.com
+
+Demo Chair User
+User: asd@asd.de
+Password: asdasd
+
 ## Getting Started
 
 ### Prerequisites
